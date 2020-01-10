@@ -1,4 +1,4 @@
 {
     "jwtSecret": "",
-    "db": "mongodb://localhost/uslada-back"
+    "db": ""
 }

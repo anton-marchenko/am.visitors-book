@@ -4,4 +4,4 @@ coverage/
 .idea/
 .vscode/
 
-.ENV
+.env

@@ -4,6 +4,7 @@ const app = express();
 
 const startup = require('./startup');
 
+startup.config();
 startup.routes(app);
 startup.db();
 
