@@ -1,8 +1,9 @@
 const express = require('express');
 const routes = require('../routes');
+const error = require('../middleware/error');
 
 module.exports = (app) => {
     app.use(express.json());
     app.use('/api', routes);
-    // TODO: - use(error)
+    app.use(error);
 }
