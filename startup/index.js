@@ -1,5 +1,7 @@
 const routes = require('./routes');
+const db = require('./db');
 
 module.exports = {
-    routes
+    routes,
+    db
 }

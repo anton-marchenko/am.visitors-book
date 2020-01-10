@@ -1,0 +1,4 @@
+{
+    "jwtSecret": "qwerty",
+    "db": "mongodb://localhost/uslada-back_test"
+}
