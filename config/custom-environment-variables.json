@@ -1,4 +1,5 @@
 {
     "jwtSecret": "usladaBack_jwtSecret",
+    "logPath": "usladaBack_logPath",
     "db": "usladaBack_db"
 }

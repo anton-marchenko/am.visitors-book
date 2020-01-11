@@ -1,14 +1,18 @@
+const config = require('config');
+const path = require('path');
 const winston = require('winston');
 require('express-async-errors');
 
 module.exports = () => {
+    const logPath = config.get('logPath');
+
     winston.handleExceptions(
         new (winston.transports.Console)({
             colorize:true,
             prettyPrint: true
         }),
         new (winston.transports.File)({
-            filename: `${__dirname}/exceptions.log`
+            filename: path.join(logPath, 'exceptions.log')
         })
         );
         
@@ -18,7 +22,7 @@ module.exports = () => {
 
 
     winston.add(winston.transports.File, {
-        filename: `${__dirname}/log.log`
+        filename: path.join(logPath, 'log.log')
     })
 
 
