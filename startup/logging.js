@@ -8,17 +8,17 @@ module.exports = () => {
 
     winston.handleExceptions(
         new (winston.transports.Console)({
-            colorize:true,
+            colorize: true,
             prettyPrint: true
         }),
         new (winston.transports.File)({
             filename: path.join(logPath, 'exceptions.log')
         })
-        );
-        
-        process.on('unhandledRejection', (ex) => {
-            throw ex;
-        });
+    );
+
+    process.on('unhandledRejection', (ex) => {
+        throw ex;
+    });
 
 
     winston.add(winston.transports.File, {
