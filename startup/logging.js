@@ -12,7 +12,7 @@ module.exports = () => {
             prettyPrint: true
         }),
         new (winston.transports.File)({
-            filename: path.join(logPath, 'exceptions.log')
+            filename: path.join(logPath, 'error.log')
         })
     );
 
@@ -20,10 +20,7 @@ module.exports = () => {
         throw ex;
     });
 
-
     winston.add(winston.transports.File, {
-        filename: path.join(logPath, 'log.log')
-    })
-
-
+        filename: path.join(logPath, 'info.log')
+    });
 }
