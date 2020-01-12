@@ -13,12 +13,22 @@ describe('/api/users', () => {
 
     describe('GET /', () => {
 
+        let token;
+
         const exec = async () => {
             return await request(server)
-                .get('/api/users');
+                .get('/api/users')
+                .set('x-auth-token', token);
         }
 
-        it.todo('should return 401 if client is not logged in');
+        beforeEach(() => {
+            token = new User({ roles: ['admin'] }).generateAuthToken();
+        });
+
+        it('should return 401 if client is not logged in', async () => {
+            
+        });
+
         it.todo('should return 403 if user is not admin');
 
         it('should return all users', async () => {
