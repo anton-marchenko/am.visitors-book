@@ -33,7 +33,13 @@ describe('/api/users', () => {
             expect(res.status).toBe(401);
         });
 
-        it.todo('should return 403 if user is not admin');
+        it('should return 403 if permission denied', async () => {
+            token = new User({ roles: [] }).generateAuthToken();
+
+            const res = await exec();
+
+            expect(res.status).toBe(403);
+        });
 
         it('should return all users', async () => {
             const users = [
