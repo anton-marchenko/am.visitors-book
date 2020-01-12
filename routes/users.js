@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { User } = require('../models/user');
 const auth = require('../middleware/auth');
-const allowedFor = require('../middleware/allowedFor');
+const allowedFor = require('../middleware/allowed-for');
 
 router.get('/', [auth, allowedFor(['admin'])], async (req, res) => {
     const users = await User.find().sort('name');
