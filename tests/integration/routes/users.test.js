@@ -26,7 +26,11 @@ describe('/api/users', () => {
         });
 
         it('should return 401 if client is not logged in', async () => {
-            
+            token = '';
+
+            const res = await exec();
+
+            expect(res.status).toBe(401);
         });
 
         it.todo('should return 403 if user is not admin');
