@@ -57,4 +57,23 @@ describe('/api/users', () => {
             expect(res.body.some(user => user.name === 'user2')).toBeTruthy();
         });
     });
+
+    describe('GET /:id', () => {
+        it.todo('should return a user if valid id passed');
+        it.todo('should return 404 if invalid id is passed');
+        it.todo('should return 404 if no user is exist with the given id');
+    });
+
+    describe('POST /', () => {
+        it.todo('should return 401 if client is not logged in');
+
+        it.todo('should return 400 if name.first is less than 2 characters');
+        it.todo('should return 400 if name.first is more than 50 characters');
+
+        it.todo('should return 400 if name.patronymic is less than 2 characters');
+        it.todo('should return 400 if name.patronymic is more than 50 characters');
+
+        it.todo('should return 400 if name.last is less than 2 characters');
+        it.todo('should return 400 if name.last is more than 50 characters');
+    });
 });
