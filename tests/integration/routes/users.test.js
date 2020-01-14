@@ -59,7 +59,23 @@ describe('/api/users', () => {
     });
 
     describe('GET /:id', () => {
-        it.todo('should return a user if valid id passed');
+        it('should return a user if valid id passed', async () => {
+            const user = new User({
+                name: {
+                    first: 'test',
+                    patronymic: 'test',
+                    last: 'test'
+                },
+                password: '12345'
+            });
+            await user.save();
+
+            const res = await request(server).get(`/api/users/${user._id}`);
+
+            expect(res.status).toBe(200);
+            expect(res.body).toHaveProperty('name.first', user.name.first);
+        });
+
         it.todo('should return 404 if invalid id is passed');
         it.todo('should return 404 if no user is exist with the given id');
     });

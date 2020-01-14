@@ -9,4 +9,10 @@ router.get('/', [auth, allowedFor(['admin'])], async (req, res) => {
     return res.send(users);
 });
 
+router.get('/:id', async (req, res) => {
+    const user = await User.findById(req.params.id);
+
+    res.send(user);
+});
+
 module.exports = router;
