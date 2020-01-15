@@ -59,6 +59,16 @@ describe('/api/users', () => {
     });
 
     describe('GET /:id', () => {
+
+        let token,
+            id;
+
+        const exec = async () => {
+            return await request(server)
+                .get('/api/users/' + id)
+                .set('x-auth-token', token);
+        }
+
         it('should return a user if valid id passed', async () => {
             const user = new User({
                 name: {
@@ -70,18 +80,25 @@ describe('/api/users', () => {
             });
             await user.save();
 
-            const res = await request(server).get(`/api/users/${user._id}`);
+            id = user._id;
+            token = user.generateAuthToken();
+
+            const res = await exec();
 
             expect(res.status).toBe(200);
             expect(res.body).toHaveProperty('name.first', user.name.first);
         });
 
         it('should return 404 if invalid id is passed', async () => {
-            const res = await request(server).get('/api/users/1');
+            token = new User({ roles: [] }).generateAuthToken();
+            id = '1';
+
+            const res = await exec();
 
             expect(res.status).toBe(404);
         });
 
+        it.todo('should return 401 if client is not logged in');
         it.todo('should return 404 if a user with the given id was not found');
     });
 
