@@ -76,8 +76,13 @@ describe('/api/users', () => {
             expect(res.body).toHaveProperty('name.first', user.name.first);
         });
 
-        it.todo('should return 404 if invalid id is passed');
-        it.todo('should return 404 if no user is exist with the given id');
+        it('should return 404 if invalid id is passed', async () => {
+            const res = await request(server).get('/api/users/1');
+
+            expect(res.status).toBe(404);
+        });
+
+        it.todo('should return 404 if a user with the given id was not found');
     });
 
     describe('POST /', () => {
