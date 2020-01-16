@@ -158,7 +158,13 @@ describe('/api/users', () => {
             expect(res.status).toBe(400);
         });
 
-        it.todo('should return 400 if name.first is more than 50 characters');
+        it('should return 400 if name.first is more than 50 characters', async () => {
+            name.first = new Array(52).join('a');
+
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+        });
 
         it.todo('should return 400 if name.patronymic is less than 2 characters');
         it.todo('should return 400 if name.patronymic is more than 50 characters');

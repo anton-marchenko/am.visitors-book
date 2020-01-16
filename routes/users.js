@@ -22,7 +22,7 @@ router.post('/', [auth], async (req, res) => {
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    return res.status(500).send('Route error');
+    return res.status(200).send('OK');
 });
 
 module.exports = router;

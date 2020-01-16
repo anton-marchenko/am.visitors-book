@@ -55,7 +55,8 @@ function validateUser(user) {
             first: Joi.string().min(2).max(50).required(),
             patronymic: Joi.string().min(2).max(50).required(),
             last: Joi.string().min(2).max(50).required()
-        }
+        },
+        password: Joi.required()
     }
 
     return Joi.validate(user, schema)
