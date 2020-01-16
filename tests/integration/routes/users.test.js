@@ -90,7 +90,7 @@ describe('/api/users', () => {
         });
 
         it('should return 404 if invalid id is passed', async () => {
-            token = new User({ roles: [] }).generateAuthToken();
+            token = new User().generateAuthToken();
             id = '1';
 
             const res = await exec();
