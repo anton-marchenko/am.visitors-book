@@ -98,7 +98,14 @@ describe('/api/users', () => {
             expect(res.status).toBe(404);
         });
 
-        it.todo('should return 401 if client is not logged in');
+        it('should return 401 if client is not logged in', async () => {
+            token = ''
+
+            const res = await exec();
+
+            expect(res.status).toBe(401);
+        });
+
         it.todo('should return 404 if a user with the given id was not found');
     });
 
