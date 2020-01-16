@@ -179,8 +179,8 @@ describe('/api/users', () => {
             checkStatus(() => name.last = genString(51), 400)
         );
 
-        it('should return 400 if password is less than 5 characters',
-            checkStatus(() => password = genString(4), 400)
+        it('should return 400 if password is less than 3 characters',
+            checkStatus(() => password = genString(2), 400)
         );
 
         it('should return 400 if password is more than 50 characters',
