@@ -42,6 +42,7 @@ describe('/api/users', () => {
         });
 
         it('should return all users', async () => {
+            // TODO: need actual user model
             const users = [
                 { name: 'user1' },
                 { name: 'user2' }
