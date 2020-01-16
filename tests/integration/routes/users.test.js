@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const { User } = require('../../../models/user');
 
 let server;
-const generateString = (length) => new Array(length + 1).join('a');
+const genString = (length) => new Array(length + 1).join('a');
 
 describe('/api/users', () => {
     beforeEach(() => { server = require('../../../index'); });
@@ -131,6 +131,16 @@ describe('/api/users', () => {
                 .send({ name, password });
         }
 
+        const checkStatus = (cb, statusCode) => {
+            return async () => {
+                cb();
+
+                const res = await exec();
+
+                expect(res.status).toBe(statusCode);
+            }
+        }
+
         beforeEach(async () => {
             name = {
                 first: 'test',
@@ -143,29 +153,17 @@ describe('/api/users', () => {
             token = user.generateAuthToken();
         });
 
-        it('should return 401 if client is not logged in', async () => {
-            token = '';
+        it('should return 401 if client is not logged in',
+            checkStatus(() => token = '', 401)
+        );
 
-            const res = await exec();
+        it('should return 400 if name.first is less than 2 characters',
+            checkStatus(() => name.first = genString(1), 400)
+        );
 
-            expect(res.status).toBe(401);
-        });
-
-        it('should return 400 if name.first is less than 2 characters', async () => {
-            name.first = generateString(1);
-
-            const res = await exec();
-
-            expect(res.status).toBe(400);
-        });
-
-        it('should return 400 if name.first is more than 50 characters', async () => {
-            name.first = generateString(51);
-
-            const res = await exec();
-
-            expect(res.status).toBe(400);
-        });
+        it('should return 400 if name.first is more than 50 characters',
+            checkStatus(() => name.first = genString(51), 400)
+        );
 
         it.todo('should return 400 if name.patronymic is less than 2 characters');
         it.todo('should return 400 if name.patronymic is more than 50 characters');
