@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const { User } = require('../../../models/user');
 
 let server;
+const generateString = (length) => new Array(length + 1).join('a');
 
 describe('/api/users', () => {
     beforeEach(() => { server = require('../../../index'); });
@@ -151,7 +152,7 @@ describe('/api/users', () => {
         });
 
         it('should return 400 if name.first is less than 2 characters', async () => {
-            name.first = 'a';
+            name.first = generateString(1);
 
             const res = await exec();
 
@@ -159,7 +160,7 @@ describe('/api/users', () => {
         });
 
         it('should return 400 if name.first is more than 50 characters', async () => {
-            name.first = new Array(52).join('a');
+            name.first = generateString(51);
 
             const res = await exec();
 
