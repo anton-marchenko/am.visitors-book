@@ -106,7 +106,14 @@ describe('/api/users', () => {
             expect(res.status).toBe(401);
         });
 
-        it.todo('should return 404 if a user with the given id was not found');
+        it('should return 404 if a user with the given id was not found', async () => {
+            id = mongoose.Types.ObjectId();
+            token = new User().generateAuthToken();
+
+            const res = await exec();
+
+            expect(res.status).toBe(404);
+        });
     });
 
     describe('POST /', () => {

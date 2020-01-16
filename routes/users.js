@@ -13,6 +13,8 @@ router.get('/', [auth, allowedFor(['admin'])], async (req, res) => {
 router.get('/:id', [auth, validateObjectId], async (req, res) => {
     const user = await User.findById(req.params.id);
 
+    if (!user) return res.status(404).send('The user with the given ID was not found.');
+
     res.send(user);
 });
 
