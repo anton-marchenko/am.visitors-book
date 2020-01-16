@@ -4,6 +4,14 @@ const { User } = require('../../../models/user');
 
 let server;
 const genString = (length) => new Array(length + 1).join('a');
+const mockUserData = () => ({
+    name: {
+        first: 'test',
+        patronymic: 'test',
+        last: 'test'
+    },
+    password: '12345'
+});
 
 describe('/api/users', () => {
     beforeEach(() => { server = require('../../../index'); });
@@ -20,7 +28,7 @@ describe('/api/users', () => {
             return await request(server)
                 .get('/api/users')
                 .set('x-auth-token', token);
-        }
+        };
 
         beforeEach(() => {
             token = new User({ roles: ['admin'] }).generateAuthToken();
@@ -70,17 +78,10 @@ describe('/api/users', () => {
             return await request(server)
                 .get('/api/users/' + id)
                 .set('x-auth-token', token);
-        }
+        };
 
         it('should return a user if valid id passed', async () => {
-            const user = new User({
-                name: {
-                    first: 'test',
-                    patronymic: 'test',
-                    last: 'test'
-                },
-                password: '12345'
-            });
+            const user = new User(mockUserData());
             await user.save();
 
             id = user._id;
@@ -129,7 +130,7 @@ describe('/api/users', () => {
                 .post('/api/users/')
                 .set('x-auth-token', token)
                 .send({ name, password });
-        }
+        };
 
         const checkStatus = (cb, statusCode) => {
             return async () => {
@@ -139,15 +140,12 @@ describe('/api/users', () => {
 
                 expect(res.status).toBe(statusCode);
             }
-        }
+        };
 
         beforeEach(async () => {
-            name = {
-                first: 'test',
-                patronymic: 'test',
-                last: 'test'
-            };
-            password = '12345';
+            const userData = mockUserData();
+            name = userData.name;
+            password = userData.password;
 
             const user = new User({ name, password });
             token = user.generateAuthToken();
