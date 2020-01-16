@@ -33,6 +33,7 @@ describe('/api/users', () => {
             expect(res.status).toBe(401);
         });
 
+        // TODO: probably need make to unit tests for testing permissions
         it('should return 403 if permission denied', async () => {
             token = new User({ roles: [] }).generateAuthToken();
 
