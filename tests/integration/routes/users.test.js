@@ -158,17 +158,35 @@ describe('/api/users', () => {
         );
 
         it('should return 400 if name.first is less than 2 characters',
-            checkStatus(() => name.first = genString(1), 400)
+            checkStatus(() => name.first = 'a', 400)
         );
 
         it('should return 400 if name.first is more than 50 characters',
             checkStatus(() => name.first = genString(51), 400)
         );
 
-        it.todo('should return 400 if name.patronymic is less than 2 characters');
-        it.todo('should return 400 if name.patronymic is more than 50 characters');
+        it('should return 400 if name.patronymic is less than 2 characters',
+            checkStatus(() => name.patronymic = 'a', 400)
+        );
 
-        it.todo('should return 400 if name.last is less than 2 characters');
-        it.todo('should return 400 if name.last is more than 50 characters');
+        it('should return 400 if name.patronymic is more than 50 characters',
+            checkStatus(() => name.patronymic = genString(51), 400)
+        );
+
+        it('should return 400 if name.last is less than 2 characters',
+            checkStatus(() => name.last = 'a', 400)
+        );
+
+        it('should return 400 if name.last is more than 50 characters',
+            checkStatus(() => name.last = genString(51), 400)
+        );
+
+        it('should return 400 if password is less than 5 characters',
+            checkStatus(() => password = genString(4), 400)
+        );
+
+        it('should return 400 if password is more than 50 characters',
+            checkStatus(() => password = genString(51), 400)
+        );
     });
 });
