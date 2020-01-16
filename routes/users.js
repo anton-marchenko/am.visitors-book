@@ -18,4 +18,8 @@ router.get('/:id', [auth, validateObjectId], async (req, res) => {
     res.send(user);
 });
 
+router.post('/', [auth], async (req, res) => {
+    res.send(403).send('Permission denied');
+});
+
 module.exports = router;

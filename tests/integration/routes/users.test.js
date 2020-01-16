@@ -119,7 +119,35 @@ describe('/api/users', () => {
     });
 
     describe('POST /', () => {
-        it.todo('should return 401 if client is not logged in');
+        let token,
+            user;
+
+        const exec = async () => {
+            return await request(server)
+                .post('/api/users/')
+                .set('x-auth-token', token)
+                .send(user);
+        }
+
+        beforeEach(async () => {
+            user = new User({
+                name: {
+                    first: 'test',
+                    patronymic: 'test',
+                    last: 'test'
+                },
+                password: '12345'
+            });
+            token = user.generateAuthToken();
+        });
+
+        it('should return 401 if client is not logged in', async () => {
+            token = '';
+
+            const res = await exec();
+
+            expect(res.status).toBe(401);
+        });
 
         it.todo('should return 400 if name.first is less than 2 characters');
         it.todo('should return 400 if name.first is more than 50 characters');
