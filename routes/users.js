@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { User } = require('../models/user');
+const { User, validate } = require('../models/user');
 const auth = require('../middleware/auth'); // TODO - index.js for middlewares
 const allowedFor = require('../middleware/allowed-for');
 const validateObjectId = require('../middleware/validate-object-id');
@@ -19,7 +19,10 @@ router.get('/:id', [auth, validateObjectId], async (req, res) => {
 });
 
 router.post('/', [auth], async (req, res) => {
-    res.status(403).send('Permission denied');
+    const { error } = validate(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
+    return res.status(500).send('Route error');
 });
 
 module.exports = router;

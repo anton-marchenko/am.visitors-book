@@ -120,24 +120,25 @@ describe('/api/users', () => {
 
     describe('POST /', () => {
         let token,
-            user;
+            name,
+            password;
 
         const exec = async () => {
             return await request(server)
                 .post('/api/users/')
                 .set('x-auth-token', token)
-                .send(user);
+                .send({ name, password });
         }
 
         beforeEach(async () => {
-            user = new User({
-                name: {
-                    first: 'test',
-                    patronymic: 'test',
-                    last: 'test'
-                },
-                password: '12345'
-            });
+            name = {
+                first: 'test',
+                patronymic: 'test',
+                last: 'test'
+            };
+            password = '12345';
+
+            const user = new User({ name, password });
             token = user.generateAuthToken();
         });
 
@@ -149,7 +150,14 @@ describe('/api/users', () => {
             expect(res.status).toBe(401);
         });
 
-        it.todo('should return 400 if name.first is less than 2 characters');
+        it('should return 400 if name.first is less than 2 characters', async () => {
+            name.first = 'a';
+
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+        });
+
         it.todo('should return 400 if name.first is more than 50 characters');
 
         it.todo('should return 400 if name.patronymic is less than 2 characters');
