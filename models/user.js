@@ -30,6 +30,13 @@ const userSchema = new mongoose.Schema({
         minlength: 5,
         maxlength: 1024
     },
+    login: {
+        type: String,
+        required: true,
+        minlength: 3,
+        maxlength: 50,
+        unique: true
+    },
     roles: [String],
     blocked: Boolean,
 });
@@ -56,7 +63,8 @@ function validateUser(user) {
             patronymic: Joi.string().min(2).max(50).required(),
             last: Joi.string().min(2).max(50).required()
         },
-        password: Joi.string().min(3).max(50).required()
+        password: Joi.string().min(3).max(50).required(),
+        login: Joi.string().min(3).max(50).required()
     }
 
     return Joi.validate(user, schema)
