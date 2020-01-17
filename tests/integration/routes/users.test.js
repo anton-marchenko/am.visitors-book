@@ -136,15 +136,18 @@ describe('/api/users', () => {
                 .send({ name, password, login });
         };
 
-        const checkStatus = (cb, statusCode) => {
-            return async () => {
-                cb();
+        const checkCode =
+            code =>
+                cb =>
+                    async () => {
+                        cb();
 
-                const res = await exec();
+                        const res = await exec();
 
-                expect(res.status).toBe(statusCode);
-            }
-        };
+                        expect(res.status).toBe(code);
+                    };
+
+        const checkCode400 = checkCode(400);
 
         beforeEach(async () => {
             const userData = mockUserData();
@@ -157,47 +160,47 @@ describe('/api/users', () => {
         });
 
         it('should return 401 if client is not logged in',
-            checkStatus(() => token = '', 401)
+            checkCode(401)(() => token = '')
         );
 
         it('should return 400 if name.first is less than 2 characters',
-            checkStatus(() => name.first = 'a', 400)
+            checkCode400(() => name.first = 'a')
         );
 
         it('should return 400 if name.first is more than 50 characters',
-            checkStatus(() => name.first = genString(51), 400)
+            checkCode400(() => name.first = genString(51))
         );
 
         it('should return 400 if name.patronymic is less than 2 characters',
-            checkStatus(() => name.patronymic = 'a', 400)
+            checkCode400(() => name.patronymic = 'a')
         );
 
         it('should return 400 if name.patronymic is more than 50 characters',
-            checkStatus(() => name.patronymic = genString(51), 400)
+            checkCode400(() => name.patronymic = genString(51))
         );
 
         it('should return 400 if name.last is less than 2 characters',
-            checkStatus(() => name.last = 'a', 400)
+            checkCode400(() => name.last = 'a')
         );
 
         it('should return 400 if name.last is more than 50 characters',
-            checkStatus(() => name.last = genString(51), 400)
+            checkCode400(() => name.last = genString(51))
         );
 
         it('should return 400 if password is less than 3 characters',
-            checkStatus(() => password = genString(2), 400)
+            checkCode400(() => password = genString(2))
         );
 
         it('should return 400 if password is more than 50 characters',
-            checkStatus(() => password = genString(51), 400)
+            checkCode400(() => password = genString(51))
         );
 
         it('should return 400 if login is less than 3 characters',
-            checkStatus(() => login = genString(2), 400)
+            checkCode400(() => login = genString(2))
         );
 
         it('should return 400 if login is more than 50 characters',
-            checkStatus(() => login = genString(51), 400)
+            checkCode400(() => login = genString(51))
         );
     });
 });
