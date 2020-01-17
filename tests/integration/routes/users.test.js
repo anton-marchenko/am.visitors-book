@@ -192,10 +192,6 @@ describe('/api/users', () => {
             checkStatus(() => password = genString(51), 400)
         );
 
-        it('should return 400 if login is empty',
-            checkStatus(() => login = '', 400)
-        );
-
         it('should return 400 if login is less than 3 characters',
             checkStatus(() => login = genString(2), 400)
         );
