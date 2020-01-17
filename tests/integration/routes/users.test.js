@@ -4,14 +4,18 @@ const { User } = require('../../../models/user');
 
 let server;
 const genString = (length) => new Array(length + 1).join('a');
-const mockUserData = () => ({
-    name: {
-        first: 'test',
-        patronymic: 'test',
-        last: 'test'
-    },
-    password: '12345'
-});
+const mockUserData = (cb) => {
+    const data = {
+        name: {
+            first: 'test',
+            patronymic: 'test',
+            last: 'test'
+        },
+        password: '12345',
+        login: 'test'
+    };
+    return cb ? cb(data) : data
+};
 
 describe('/api/users', () => {
     beforeEach(() => { server = require('../../../index'); });
@@ -52,10 +56,9 @@ describe('/api/users', () => {
         });
 
         it('should return all users', async () => {
-            // TODO: need actual user model
             const users = [
-                { name: 'user1' },
-                { name: 'user2' }
+                mockUserData((user) => ({ ...user, login: user.login + '1' })),
+                mockUserData((user) => ({ ...user, login: user.login + '2' })),
             ];
 
             await User.collection.insertMany(users);
@@ -64,8 +67,8 @@ describe('/api/users', () => {
 
             expect(res.status).toBe(200);
             expect(res.body.length).toBe(2);
-            expect(res.body.some(user => user.name === 'user1')).toBeTruthy();
-            expect(res.body.some(user => user.name === 'user2')).toBeTruthy();
+            expect(res.body.some(user => user.login === users[0].login)).toBeTruthy();
+            expect(res.body.some(user => user.login === users[1].login)).toBeTruthy();
         });
     });
 
@@ -122,6 +125,7 @@ describe('/api/users', () => {
 
     describe('POST /', () => {
         let token,
+            login,
             name,
             password;
 
@@ -129,7 +133,7 @@ describe('/api/users', () => {
             return await request(server)
                 .post('/api/users/')
                 .set('x-auth-token', token)
-                .send({ name, password });
+                .send({ name, password, login });
         };
 
         const checkStatus = (cb, statusCode) => {
@@ -145,9 +149,10 @@ describe('/api/users', () => {
         beforeEach(async () => {
             const userData = mockUserData();
             name = userData.name;
+            login = userData.login;
             password = userData.password;
 
-            const user = new User({ name, password });
+            const user = new User({ name, password, login });
             token = user.generateAuthToken();
         });
 
@@ -185,6 +190,18 @@ describe('/api/users', () => {
 
         it('should return 400 if password is more than 50 characters',
             checkStatus(() => password = genString(51), 400)
+        );
+
+        it('should return 400 if login is empty',
+            checkStatus(() => login = '', 400)
+        );
+
+        it('should return 400 if login is less than 3 characters',
+            checkStatus(() => login = genString(2), 400)
+        );
+
+        it('should return 400 if login is more than 50 characters',
+            checkStatus(() => login = genString(51), 400)
         );
     });
 });
