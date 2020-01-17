@@ -1,4 +1,4 @@
-const allowedFor = require('../../../middleware/allowed-for');
+const { allowedFor } = require('../../../middleware');
 
 describe('allowedFor middleware', () => {
 

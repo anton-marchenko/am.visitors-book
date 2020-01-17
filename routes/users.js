@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { User, validate } = require('../models/user');
-const auth = require('../middleware/auth'); // TODO - index.js for middlewares
-const allowedFor = require('../middleware/allowed-for');
-const validateObjectId = require('../middleware/validate-object-id');
+const { auth, allowedFor, validateObjectId } = require('../middleware');
 
 router.get('/', [auth, allowedFor(['admin'])], async (req, res) => {
     const users = await User.find().sort('name');
