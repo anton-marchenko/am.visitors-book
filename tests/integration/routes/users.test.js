@@ -204,6 +204,9 @@ describe('/api/users', () => {
         it('should return 400 if login is more than 50 characters',
             checkCode400(() => login = genString(51))
         );
+
+        it.todo('should save the user if input is valid');
+        it.todo('should return the user if input is valid');
     });
 
     describe('PUT /:id', () => {
