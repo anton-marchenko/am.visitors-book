@@ -203,4 +203,24 @@ describe('/api/users', () => {
             checkCode400(() => login = genString(51))
         );
     });
+
+    describe('PUT /:id', () => {
+        it.todo('should return 401 if client is not logged in');
+        it.todo('should return 404 if an user with given id was not found');
+        it.todo('should return 404 if id is invalid');
+        it.todo('should return 403 if permission denied');
+        it.todo('should return 400 if name.first is less than 2 characters');
+        it.todo('should return 400 if name.first is more than 50 characters');
+        it.todo('should return 400 if name.patronymic is less than 2 characters');
+        it.todo('should return 400 if name.patronymic is more than 50 characters');
+        it.todo('should return 400 if name.last is less than 2 characters');
+        it.todo('should return 400 if name.last is more than 50 characters');
+        it.todo('should return 400 if password is less than 3 characters');
+        it.todo('should return 400 if password is more than 50 characters');
+        it.todo('should return 400 if login is less than 3 characters');
+        it.todo('should return 400 if login is more than 50 characters');
+
+        it.todo('should  update the user if input is valid');
+        it.todo('should return the updated user if input is valid');
+    });
 });
