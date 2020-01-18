@@ -163,6 +163,8 @@ describe('/api/users', () => {
             checkCode(401)(() => token = '')
         );
 
+        it.todo('should return 403 if permission denied');
+
         it('should return 400 if name.first is less than 2 characters',
             checkCode400(() => name.first = 'a')
         );
