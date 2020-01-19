@@ -1,4 +1,4 @@
-const { User } = require('../../../models/user');
+const { User, validator } = require('../../../models/user');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const mongoose = require('mongoose');
@@ -31,4 +31,20 @@ describe('user model', () => {
         expect(user.fullName).toMatch(name.patronymic);
         expect(user.fullName).toMatch(name.last);
     });
+});
+
+describe.only('user model validation', () => {
+
+    it.todo('should return no error if there is a valid input');
+
+    it.todo('should return an error if name.first is less than 2 characters');
+    it.todo('should return an error if name.first is more than 50 characters');
+    it.todo('should return an error if name.patronymic is less than 2 characters');
+    it.todo('should return an error if name.patronymic is more than 50 characters');
+    it.todo('should return an error if name.last is less than 2 characters');
+    it.todo('should return an error if name.last is more than 50 characters');
+    it.todo('should return an error if password is less than 3 characters');
+    it.todo('should return an error if password is more than 50 characters');
+    it.todo('should return an error if login is less than 3 characters');
+    it.todo('should return an error if login is more than 50 characters');
 });
