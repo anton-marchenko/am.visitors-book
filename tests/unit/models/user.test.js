@@ -103,8 +103,35 @@ describe('user model validation', () => {
         expect(error).toBeTruthy();
     });
 
-    it.todo('should return an error if password is less than 3 characters');
-    it.todo('should return an error if password is more than 50 characters');
-    it.todo('should return an error if login is less than 3 characters');
-    it.todo('should return an error if login is more than 50 characters');
+    it('should return an error if password is less than 3 characters', () => {
+        user.password = '12';
+
+        const { error } = validator(user);
+
+        expect(error).toBeTruthy();
+    });
+
+    it('should return an error if password is more than 50 characters', () => {
+        user.password = genString(51);
+
+        const { error } = validator(user);
+
+        expect(error).toBeTruthy();
+    });
+
+    it('should return an error if login is less than 3 characters', () => {
+        user.login = genString(2);
+
+        const { error } = validator(user);
+
+        expect(error).toBeTruthy();
+    });
+
+    it('should return an error if login is more than 50 characters', () => {
+        user.login = genString(51);
+
+        const { error } = validator(user);
+
+        expect(error).toBeTruthy();
+    });
 });
