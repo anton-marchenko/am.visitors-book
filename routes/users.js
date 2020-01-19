@@ -22,7 +22,7 @@ router.get('/:id', [auth, validateObjectId], async (req, res) => {
 });
 
 router.post('/', [auth, validate(validator)], async (req, res) => {
-    res.status(200).send('OK');
+    res.status(201).send('Created');
 });
 
 module.exports = router;

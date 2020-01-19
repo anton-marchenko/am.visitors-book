@@ -176,6 +176,7 @@ describe('/api/users', () => {
             expect(res.status).toBe(400);
         });
 
+        it.todo('should return 201 if input is valid');
         it.todo('should save the user if input is valid');
         it.todo('should return the user if input is valid');
     });
