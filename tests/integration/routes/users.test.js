@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const { User } = require('../../../models/user');
 
 let server;
-const genString = (length) => new Array(length + 1).join('a');
+
 const mockUserData = (cb) => {
     const data = {
         name: {
@@ -125,85 +125,56 @@ describe('/api/users', () => {
 
     describe('POST /', () => {
         let token,
-            login,
-            name,
-            password;
+            userData;
 
         const exec = async () => {
+            const { name, password, login } = userData;
             return await request(server)
                 .post('/api/users/')
                 .set('x-auth-token', token)
                 .send({ name, password, login });
         };
 
-        const checkCode =
-            code =>
-                cb =>
-                    async () => {
-                        cb();
-
-                        const res = await exec();
-
-                        expect(res.status).toBe(code);
-                    };
-
-        const checkCode400 = checkCode(400);
-
         beforeEach(async () => {
-            const userData = mockUserData();
-            name = userData.name;
-            login = userData.login;
-            password = userData.password;
+            userData = mockUserData();
 
-            const user = new User({ name, password, login });
+            const user = new User(userData);
             token = user.generateAuthToken();
         });
 
-        it('should return 401 if client is not logged in',
-            checkCode(401)(() => token = '')
-        );
+        it('should return 401 if client is not logged in', async () => {
+            token = ''
+
+            const res = await exec();
+
+            expect(res.status).toBe(401);
+        });
 
         it.todo('should return 403 if permission denied');
 
-        it('should return 400 if name.first is less than 2 characters',
-            checkCode400(() => name.first = 'a')
-        );
+        it('should return 400 if name is not valid', async () => {
+            userData.name = '';
 
-        it('should return 400 if name.first is more than 50 characters',
-            checkCode400(() => name.first = genString(51))
-        );
+            const res = await exec();
 
-        it('should return 400 if name.patronymic is less than 2 characters',
-            checkCode400(() => name.patronymic = 'a')
-        );
+            expect(res.status).toBe(400);
+        });
 
-        it('should return 400 if name.patronymic is more than 50 characters',
-            checkCode400(() => name.patronymic = genString(51))
-        );
+        it('should return 400 if password is not valid', async () => {
+            userData.password = '';
 
-        it('should return 400 if name.last is less than 2 characters',
-            checkCode400(() => name.last = 'a')
-        );
+            const res = await exec();
 
-        it('should return 400 if name.last is more than 50 characters',
-            checkCode400(() => name.last = genString(51))
-        );
+            expect(res.status).toBe(400);
+        });
 
-        it('should return 400 if password is less than 3 characters',
-            checkCode400(() => password = genString(2))
-        );
+        it('should return 400 if login is not valid', async () => {
+            userData.login = '';
 
-        it('should return 400 if password is more than 50 characters',
-            checkCode400(() => password = genString(51))
-        );
+            const res = await exec();
 
-        it('should return 400 if login is less than 3 characters',
-            checkCode400(() => login = genString(2))
-        );
-
-        it('should return 400 if login is more than 50 characters',
-            checkCode400(() => login = genString(51))
-        );
+            expect(res.status).toBe(400);
+        });
 
         it.todo('should save the user if input is valid');
         it.todo('should return the user if input is valid');
@@ -214,16 +185,9 @@ describe('/api/users', () => {
         it.todo('should return 404 if an user with given id was not found');
         it.todo('should return 404 if id is invalid');
         it.todo('should return 403 if permission denied');
-        it.todo('should return 400 if name.first is less than 2 characters');
-        it.todo('should return 400 if name.first is more than 50 characters');
-        it.todo('should return 400 if name.patronymic is less than 2 characters');
-        it.todo('should return 400 if name.patronymic is more than 50 characters');
-        it.todo('should return 400 if name.last is less than 2 characters');
-        it.todo('should return 400 if name.last is more than 50 characters');
-        it.todo('should return 400 if password is less than 3 characters');
-        it.todo('should return 400 if password is more than 50 characters');
-        it.todo('should return 400 if login is less than 3 characters');
-        it.todo('should return 400 if login is more than 50 characters');
+        it.todo('should return 400 if name is not valid');
+        it.todo('should return 400 if password is not valid');
+        it.todo('should return 400 if login is not valid');
 
         it.todo('should  update the user if input is valid');
         it.todo('should return the updated user if input is valid');
