@@ -33,9 +33,26 @@ describe('user model', () => {
     });
 });
 
-describe.only('user model validation', () => {
+describe('user model validation', () => {
+    let user;
 
-    it.todo('should return no error if there is a valid input');
+    beforeEach(() => {
+        user = {
+            name: {
+                first: 'First',
+                patronymic: 'Patronymic',
+                last: 'Last'
+            },
+            password: '12345',
+            login: 'test'
+        };
+    });
+
+    it('should return no error if there is a valid input', () => {
+        const { error } = validator(user);
+
+        expect(error).toBeFalsy();
+    });
 
     it.todo('should return an error if name.first is less than 2 characters');
     it.todo('should return an error if name.first is more than 50 characters');
