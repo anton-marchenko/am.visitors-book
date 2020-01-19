@@ -39,9 +39,9 @@ describe('user model validation', () => {
     beforeEach(() => {
         user = {
             name: {
-                first: 'First',
-                patronymic: 'Patronymic',
-                last: 'Last'
+                first: 'test',
+                patronymic: 'test',
+                last: 'test'
             },
             password: '12345',
             login: 'test'
