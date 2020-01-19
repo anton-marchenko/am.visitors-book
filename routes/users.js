@@ -1,7 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { User, validate } = require('../models/user');
-const { auth, allowedFor, validateObjectId } = require('../middleware');
+const { User, validator } = require('../models/user');
+const {
+    auth,
+    allowedFor,
+    validate,
+    validateObjectId
+} = require('../middleware');
 
 router.get('/', [auth, allowedFor(['admin'])], async (req, res) => {
     const users = await User.find().sort('name');
@@ -16,11 +21,8 @@ router.get('/:id', [auth, validateObjectId], async (req, res) => {
     res.send(user);
 });
 
-router.post('/', [auth], async (req, res) => {
-    const { error } = validate(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-
-    return res.status(200).send('OK');
+router.post('/', [auth, validate(validator)], async (req, res) => {
+    res.status(200).send('OK');
 });
 
 module.exports = router;
