@@ -21,7 +21,7 @@ router.get('/:id', [auth, validateObjectId], async (req, res) => {
     res.send(user);
 });
 
-router.post('/', [auth, validate(validator)], async (req, res) => {
+router.post('/', [auth, allowedFor(['admin']), validate(validator)], async (req, res) => {
     res.status(201).send('Created');
 });
 
