@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcrypt');
 const router = express.Router();
 const { User, validator } = require('../models/user');
 const {
@@ -22,7 +23,18 @@ router.get('/:id', [auth, validateObjectId], async (req, res) => {
 });
 
 router.post('/', [auth, allowedFor(['admin']), validate(validator)], async (req, res) => {
-    res.status(201).send('Created');
+    const user = new User(req.body); // FIXME - needs explicitly picking
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(user.password, salt);
+    await user.save();
+
+    const {
+        _id,
+        name,
+        login
+    } = user;
+
+    res.status(201).send({ _id, name, login });
 });
 
 module.exports = router;

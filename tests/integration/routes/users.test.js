@@ -183,9 +183,26 @@ describe('/api/users', () => {
             expect(res.status).toBe(400);
         });
 
-        it.todo('should return 201 if input is valid');
-        it.todo('should save the user if input is valid');
-        it.todo('should return the user if input is valid');
+        it('should save the user if input is valid', async () => {
+            await exec();
+
+            const user = await User.findOne({ login: userData.login });
+
+            expect(user).not.toBeNull();
+        });
+
+        it('should return 201 if the user successfully created', async () => {
+            const res = await exec();
+
+            expect(res.status).toBe(201);
+        });
+
+        it.only('should return the user if input is valid', async () => {
+            const res = await exec();
+
+            expect(res.body).toHaveProperty('_id');
+            expect(res.body).toHaveProperty('login', userData.login);
+        });
     });
 
     describe('PUT /:id', () => {
