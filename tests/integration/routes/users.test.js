@@ -138,7 +138,7 @@ describe('/api/users', () => {
         beforeEach(async () => {
             userData = mockUserData();
 
-            const user = new User({roles: ['admin']})
+            const user = new User({ roles: ['admin'] })
             token = user.generateAuthToken();
         });
 
@@ -151,7 +151,7 @@ describe('/api/users', () => {
         });
 
         it('should return 403 if permission denied', async () => {
-            const user = new User({roles: []})
+            const user = new User({ roles: [] })
             token = user.generateAuthToken();
 
             const res = await exec();
