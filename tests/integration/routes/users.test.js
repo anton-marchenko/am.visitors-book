@@ -181,7 +181,33 @@ describe('/api/users', () => {
     });
 
     describe('PUT /:id', () => {
-        it.todo('should return 401 if client is not logged in');
+        let token,
+            id;
+
+        const exec = async () => {
+            return await request(server)
+                .put('/api/users/' + id)
+                .set('x-auth-token', token)
+                .send({ });
+        };
+
+        beforeEach(async () => {
+            const user = new User(mockUserData());
+            await user.save();
+
+            const admin = new User({ roles: ['admin'] })
+            token = admin.generateAuthToken();
+            id = user._id;
+        });
+
+        it('should return 401 if client is not logged in', async () => {
+            token = '';
+
+            const res = await exec();
+
+            expect(res.status).toBe(401);
+        });
+
         it.todo('should return 404 if an user with given id was not found');
         it.todo('should return 404 if id is invalid');
         it.todo('should return 403 if permission denied');
