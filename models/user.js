@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const config = require('config');
 const jwt = require('jsonwebtoken');
-const Joi = require('joi');
+const Joi = require('@hapi/joi');
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -72,7 +72,7 @@ function validateUser(user) {
         login: Joi.string().min(3).max(50).required()
     }
 
-    return Joi.validate(user, schema)
+    return Joi.object(schema).validate(user)
 }
 
 exports.User = User;
