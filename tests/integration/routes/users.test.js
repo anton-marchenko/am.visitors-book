@@ -182,13 +182,14 @@ describe('/api/users', () => {
 
     describe('PUT /:id', () => {
         let token,
+            editedUserData,
             id;
 
         const exec = async () => {
             return await request(server)
                 .put('/api/users/' + id)
                 .set('x-auth-token', token)
-                .send({});
+                .send(editedUserData);
         };
 
         beforeEach(async () => {
@@ -198,6 +199,15 @@ describe('/api/users', () => {
             const admin = new User({ roles: ['admin'] })
             token = admin.generateAuthToken();
             id = user._id;
+            editedUserData = {
+                name: {
+                    first: 'edited',
+                    patronymic: 'edited',
+                    last: 'edited'
+                },
+                password: 'edited',
+                login: 'edited'
+            };
         });
 
         it('should return 401 if client is not logged in', async () => {
@@ -233,7 +243,13 @@ describe('/api/users', () => {
             expect(res.status).toBe(403);
         });
 
-        it.todo('should return 400 if login is not valid');
+        it('should return 400 if input is not valid', async () => {
+            editedUserData.login = '';
+
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+        });
 
         it.todo('should  update the user if input is valid');
         it.todo('should return the updated user if input is valid');

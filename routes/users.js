@@ -11,7 +11,12 @@ const {
 const NOT_FOUND_MSG = 'The user with the given ID was not found.';
 
 const createUserMiddleware = [auth, allowedFor(['admin']), validate(validator)];
-const editUserMiddleware = [auth, allowedFor(['admin']), validateObjectId];
+const editUserMiddleware = [
+    auth, 
+    allowedFor(['admin']), 
+    validateObjectId,
+    validate(validator)
+];
 
 router.get('/', [auth, allowedFor(['admin'])], async (req, res) => {
     const users = await User.find().sort('name');
