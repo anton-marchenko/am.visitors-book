@@ -51,9 +51,7 @@ describe('user model public data', () => {
         };
         const user = new User(notPublicData);
 
-        expect(User.getPublicData(user)).toEqual(
-            expect.not.objectContaining({ password: 'test' })
-        );
+        expect(User.getPublicData(user)).not.toHaveProperty('password');
     });
 
     it('should contain public data keys', () => {
