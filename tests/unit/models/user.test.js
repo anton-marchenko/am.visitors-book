@@ -34,7 +34,7 @@ describe('user model', () => {
 });
 
 describe('user model public data', () => {
-    it.only('should contain public data', () => {
+    it('should contain public data', () => {
         const publicData = {
             login: 'test',
             phone: 'test',
