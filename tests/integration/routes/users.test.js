@@ -159,22 +159,6 @@ describe('/api/users', () => {
             expect(res.status).toBe(403);
         });
 
-        it('should return 400 if name is not valid', async () => {
-            userData.name = '';
-
-            const res = await exec();
-
-            expect(res.status).toBe(400);
-        });
-
-        it('should return 400 if password is not valid', async () => {
-            userData.password = '';
-
-            const res = await exec();
-
-            expect(res.status).toBe(400);
-        });
-
         it('should return 400 if login is not valid', async () => {
             userData.login = '';
 
@@ -210,8 +194,6 @@ describe('/api/users', () => {
         it.todo('should return 404 if an user with given id was not found');
         it.todo('should return 404 if id is invalid');
         it.todo('should return 403 if permission denied');
-        it.todo('should return 400 if name is not valid');
-        it.todo('should return 400 if password is not valid');
         it.todo('should return 400 if login is not valid');
 
         it.todo('should  update the user if input is valid');
