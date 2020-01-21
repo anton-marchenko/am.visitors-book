@@ -208,8 +208,15 @@ describe('/api/users', () => {
             expect(res.status).toBe(401);
         });
 
+        it('should return 404 if id is not valid', async () => {
+            id = 1;
+
+            const res = await exec();
+
+            expect(res.status).toBe(404);
+        });
+
         it.todo('should return 404 if an user with given id was not found');
-        it.todo('should return 404 if id is invalid');
         it.todo('should return 403 if permission denied');
         it.todo('should return 400 if login is not valid');
 

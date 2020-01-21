@@ -39,7 +39,7 @@ router.post('/', [auth, allowedFor(['admin']), validate(validator)], async (req,
     res.status(201).send(user);
 });
 
-router.put('/:id', auth, async(req, res) => {
+router.put('/:id', [auth, validateObjectId], async(req, res) => {
     res.status(200).send('OK');
 });
 
