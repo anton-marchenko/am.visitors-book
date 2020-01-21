@@ -8,6 +8,8 @@ const {
     validateObjectId
 } = require('../middleware');
 
+const NOT_FOUND_MSG = 'The user with the given ID was not found.';
+
 router.get('/', [auth, allowedFor(['admin'])], async (req, res) => {
     const users = await User.find().sort('name');
     return res.send(users);
@@ -16,7 +18,7 @@ router.get('/', [auth, allowedFor(['admin'])], async (req, res) => {
 router.get('/:id', [auth, validateObjectId], async (req, res) => {
     const user = await User.findById(req.params.id);
 
-    if (!user) return res.status(404).send('The user with the given ID was not found.');
+    if (!user) return res.status(404).send(NOT_FOUND_MSG);
 
     res.send(user);
 });
@@ -42,7 +44,7 @@ router.post('/', [auth, allowedFor(['admin']), validate(validator)], async (req,
 router.put('/:id', [auth, validateObjectId], async (req, res) => {
     const user = await User.findById(req.params.id);
 
-    if (!user) return res.status(404).send('The user with the given ID was not found.');
+    if (!user) return res.status(404).send(NOT_FOUND_MSG);
 
     res.status(200).send('OK');
 });
