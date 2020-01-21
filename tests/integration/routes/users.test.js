@@ -188,7 +188,7 @@ describe('/api/users', () => {
             return await request(server)
                 .put('/api/users/' + id)
                 .set('x-auth-token', token)
-                .send({ });
+                .send({});
         };
 
         beforeEach(async () => {
@@ -216,7 +216,14 @@ describe('/api/users', () => {
             expect(res.status).toBe(404);
         });
 
-        it.todo('should return 404 if an user with given id was not found');
+        it('should return 404 if an user with given id was not found', async () => {
+            id = mongoose.Types.ObjectId();
+
+            const res = await exec();
+
+            expect(res.status).toBe(404);
+        });
+
         it.todo('should return 403 if permission denied');
         it.todo('should return 400 if login is not valid');
 
