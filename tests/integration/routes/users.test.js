@@ -159,7 +159,7 @@ describe('/api/users', () => {
             expect(res.status).toBe(403);
         });
 
-        it('should return 400 if login is not valid', async () => {
+        it('should return 400 if input is not valid', async () => {
             userData.login = '';
 
             const res = await exec();
