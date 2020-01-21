@@ -10,6 +10,9 @@ const {
 
 const NOT_FOUND_MSG = 'The user with the given ID was not found.';
 
+const createUserMiddleware = [auth, allowedFor(['admin']), validate(validator)];
+const editUserMiddleware = [auth, allowedFor(['admin']), validateObjectId];
+
 router.get('/', [auth, allowedFor(['admin'])], async (req, res) => {
     const users = await User.find().sort('name');
     return res.send(users);
@@ -23,7 +26,7 @@ router.get('/:id', [auth, validateObjectId], async (req, res) => {
     res.send(user);
 });
 
-router.post('/', [auth, allowedFor(['admin']), validate(validator)], async (req, res) => {
+router.post('/', createUserMiddleware, async (req, res) => {
     const {
         name: { first, patronymic, last },
         login,
@@ -41,7 +44,7 @@ router.post('/', [auth, allowedFor(['admin']), validate(validator)], async (req,
     res.status(201).send(user);
 });
 
-router.put('/:id', [auth, allowedFor(['admin']), validateObjectId], async (req, res) => {
+router.put('/:id', editUserMiddleware, async (req, res) => {
     const user = await User.findById(req.params.id);
 
     if (!user) return res.status(404).send(NOT_FOUND_MSG);
