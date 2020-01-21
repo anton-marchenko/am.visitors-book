@@ -56,8 +56,19 @@ describe('user model public data', () => {
         );
     });
 
-    it.todo('should return public data keys');
-    it.todo('should not return any keys except public data keys');
+    it('should contain public data keys', () => {
+        data = User.publicFields();
+
+        expect(data).toContain('_id');
+        expect(data).toContain('login');
+        expect(data).toContain('phone');
+    });
+
+    it('should not contain any keys except public data keys', () => {
+        data = User.publicFields();
+
+        expect(data).not.toContain('password');
+    });
 });
 
 describe('user model validation', () => {
