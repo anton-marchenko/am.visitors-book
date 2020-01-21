@@ -166,14 +166,6 @@ describe('/api/users', () => {
             expect(res.status).toBe(400);
         });
 
-        it('should save the user if input is valid', async () => {
-            await exec();
-
-            const user = await User.findOne({ login: userData.login });
-
-            expect(user).not.toBeNull();
-        });
-
         it('should return 201 if the user successfully created', async () => {
             const res = await exec();
 

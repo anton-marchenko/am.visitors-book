@@ -2,6 +2,12 @@ const mongoose = require('mongoose');
 const config = require('config');
 const jwt = require('jsonwebtoken');
 const Joi = require('@hapi/joi');
+const bcrypt = require('bcrypt');
+
+const generateHashedPassword = async (plainPassword) => {
+    const salt = await bcrypt.genSalt(10);
+    return bcrypt.hash(plainPassword, salt);
+}
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -79,6 +85,26 @@ userSchema.statics.getPublicData = function (user) {
             {}
         );
 };
+
+userSchema.statics.createNewUser = async function ({
+    name: { first, patronymic, last },
+    login,
+    password: plainPassword,
+    phone
+}) {
+    const hashedPassword = await generateHashedPassword(plainPassword);
+
+    const user = new User({
+        name: { first, patronymic, last },
+        login,
+        password: hashedPassword,
+        phone
+    });
+
+    await user.save();
+
+    return this.getPublicData(user);
+}
 
 userSchema.virtual('fullName').get(function () {
     return `${this.name.first} ${this.name.patronymic} ${this.name.last}`;

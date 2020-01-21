@@ -1,5 +1,4 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
 const router = express.Router();
 const { User, validator } = require('../models/user');
 const {
@@ -23,18 +22,21 @@ router.get('/:id', [auth, validateObjectId], async (req, res) => {
 });
 
 router.post('/', [auth, allowedFor(['admin']), validate(validator)], async (req, res) => {
-    const { name: { first, patronymic, last }, login, password, phone } = req.body;
-    const user = new User({
+    const {
+        name: { first, patronymic, last },
+        login,
+        password,
+        phone
+    } = req.body;
+
+    const user = await User.createNewUser({
         name: { first, patronymic, last },
         login,
         password,
         phone
     });
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(user.password, salt);
-    await user.save();
 
-    res.status(201).send(User.getPublicData(user));
+    res.status(201).send(user);
 });
 
 module.exports = router;
