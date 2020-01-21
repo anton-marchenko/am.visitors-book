@@ -134,4 +134,12 @@ describe('user model validation', () => {
 
         expect(error).toBeTruthy();
     });
+
+    it('should return an error if phone is more than 50 characters', () => {
+        user.phone = genString(51);
+
+        const { error } = validator(user);
+
+        expect(error).toBeTruthy();
+    });
 });

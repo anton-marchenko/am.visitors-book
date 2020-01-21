@@ -37,6 +37,10 @@ const userSchema = new mongoose.Schema({
         maxlength: 50,
         unique: true
     },
+    phone: {
+        type: String,
+        maxlength: 50
+    },
     roles: [String],
     blocked: Boolean,
 });
@@ -63,6 +67,7 @@ function validateUser(user) {
             patronymic: Joi.string().min(2).max(50).required(),
             last: Joi.string().min(2).max(50).required()
         },
+        phone: Joi.string().max(50),
         password: Joi.string().min(3).max(50).required(),
         login: Joi.string().min(3).max(50).required()
     }
