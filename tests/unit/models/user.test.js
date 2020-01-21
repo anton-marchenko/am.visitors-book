@@ -33,6 +33,33 @@ describe('user model', () => {
     });
 });
 
+describe('user model public data', () => {
+    it.only('should contain public data', () => {
+        const publicData = {
+            login: 'test',
+            phone: 'test',
+        };
+        const user = new User(publicData);
+
+        expect(User.getPublicData(user)).toHaveProperty('login');
+        expect(User.getPublicData(user)).toHaveProperty('phone');
+    });
+
+    it('should not contain any data except public data', () => {
+        const notPublicData = {
+            password: 'test'
+        };
+        const user = new User(notPublicData);
+
+        expect(User.getPublicData(user)).toEqual(
+            expect.not.objectContaining({ password: 'test' })
+        );
+    });
+
+    it.todo('should return public data keys');
+    it.todo('should not return any keys except public data keys');
+});
+
 describe('user model validation', () => {
     const genString = (length) => new Array(length + 1).join('a');
     let user;

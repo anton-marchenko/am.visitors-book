@@ -23,18 +23,18 @@ router.get('/:id', [auth, validateObjectId], async (req, res) => {
 });
 
 router.post('/', [auth, allowedFor(['admin']), validate(validator)], async (req, res) => {
-    const user = new User(req.body); // FIXME - needs explicitly picking
+    const { name: { first, patronymic, last }, login, password, phone } = req.body;
+    const user = new User({
+        name: { first, patronymic, last },
+        login,
+        password,
+        phone
+    });
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
     await user.save();
 
-    const {
-        _id,
-        name,
-        login
-    } = user;
-
-    res.status(201).send({ _id, name, login });
+    res.status(201).send(User.getPublicData(user));
 });
 
 module.exports = router;

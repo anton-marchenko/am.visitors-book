@@ -45,6 +45,19 @@ const userSchema = new mongoose.Schema({
     blocked: Boolean,
 });
 
+
+
+userSchema.statics.publicFields = function () {
+    return [
+        '_id',
+        'name',
+        'phone',
+        'login',
+        'roles',
+        'blocked'
+    ]
+}
+
 userSchema.methods.generateAuthToken = function () {
     const token = jwt.sign({
         _id: this._id,
@@ -53,6 +66,19 @@ userSchema.methods.generateAuthToken = function () {
 
     return token;
 }
+
+
+userSchema.statics.getPublicData = function (user) {
+    return this.publicFields()
+        .reduce(
+            (acc, field) => (
+                (user[field] !== undefined)
+                    ? { ...acc, [field]: user[field] }
+                    : { ...acc }
+            ),
+            {}
+        );
+};
 
 userSchema.virtual('fullName').get(function () {
     return `${this.name.first} ${this.name.patronymic} ${this.name.last}`;
