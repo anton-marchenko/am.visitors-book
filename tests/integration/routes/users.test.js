@@ -197,7 +197,7 @@ describe('/api/users', () => {
             expect(res.status).toBe(201);
         });
 
-        it.only('should return the user if input is valid', async () => {
+        it('should return the user if input is valid', async () => {
             const res = await exec();
 
             expect(res.body).toHaveProperty('_id');
