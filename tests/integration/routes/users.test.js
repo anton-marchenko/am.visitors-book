@@ -224,7 +224,15 @@ describe('/api/users', () => {
             expect(res.status).toBe(404);
         });
 
-        it.todo('should return 403 if permission denied');
+        it('should return 403 if permission denied', async () => {
+            const user = new User({ roles: [] })
+            token = user.generateAuthToken();
+
+            const res = await exec();
+
+            expect(res.status).toBe(403);
+        });
+
         it.todo('should return 400 if login is not valid');
 
         it.todo('should  update the user if input is valid');

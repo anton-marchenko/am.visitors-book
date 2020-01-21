@@ -41,7 +41,7 @@ router.post('/', [auth, allowedFor(['admin']), validate(validator)], async (req,
     res.status(201).send(user);
 });
 
-router.put('/:id', [auth, validateObjectId], async (req, res) => {
+router.put('/:id', [auth, allowedFor(['admin']), validateObjectId], async (req, res) => {
     const user = await User.findById(req.params.id);
 
     if (!user) return res.status(404).send(NOT_FOUND_MSG);
