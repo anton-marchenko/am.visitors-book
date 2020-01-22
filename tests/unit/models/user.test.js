@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const {
     User,
     createdUserValidator,
+    editedUserValidator,
     baseValidator
 } = require('../../../models/user');
 
@@ -206,6 +207,40 @@ describe('user model validation', () => {
             user.password = genString(51);
 
             const { error } = createdUserValidator(user);
+
+            expect(error).toBeTruthy();
+        });
+    });
+
+    describe('editedUserValidator', () => {
+        it('should return no error if it is valid input', () => {
+            user.password = '12345';
+
+            const { error } = editedUserValidator(user);
+
+            expect(error).toBeFalsy();
+        });
+
+        it('should return no error if input is valid but password is not defined', () => {
+            user.password = undefined;
+
+            const { error } = editedUserValidator(user);
+
+            expect(error).toBeFalsy();
+        });
+
+        it('should return an error if password is less than 3 characters', () => {
+            user.password = 'a';
+
+            const { error } = editedUserValidator(user);
+
+            expect(error).toBeTruthy();
+        });
+
+        it('should return an error if password is more than 50 characters', () => {
+            user.password = genString(51);
+
+            const { error } = editedUserValidator(user);
 
             expect(error).toBeTruthy();
         });

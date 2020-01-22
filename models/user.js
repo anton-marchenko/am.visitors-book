@@ -130,8 +130,21 @@ const withPasswordValidation = (validator) => {
     });
 };
 
+const withEditedUserPasswordValidation = (validator) => {
+    return validator()
+        .keys({ password: Joi.any() })
+        .when(
+            Joi.object({ password: Joi.exist() }).unknown(),
+            {
+                then: Joi.object({
+                    password: Joi.string().min(3).max(50)
+                })
+            }
+        );
+};
+
 const editedUserValidator = (user) => {
-    return withPasswordValidation(baseValidator).validate(user)
+    return withEditedUserPasswordValidation(baseValidator).validate(user)
 };
 
 function createdUserValidator(user) {
@@ -139,6 +152,8 @@ function createdUserValidator(user) {
 }
 
 exports.User = User;
+// TODO baseValidator was exported just for tests.
+// TODO Probably, needs moving validation to external module
 exports.baseValidator = baseValidator;
 exports.createdUserValidator = createdUserValidator;
 exports.editedUserValidator = editedUserValidator;
