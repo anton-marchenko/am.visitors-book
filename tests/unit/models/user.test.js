@@ -1,7 +1,11 @@
-const { User, createdUserValidator } = require('../../../models/user');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const mongoose = require('mongoose');
+const {
+    User,
+    createdUserValidator,
+    baseValidator
+} = require('../../../models/user');
 
 describe('user model', () => {
     it('should return a valid JWT', () => {
@@ -80,102 +84,131 @@ describe('user model validation', () => {
                 patronymic: 'test',
                 last: 'test'
             },
-            password: '12345',
             login: 'test'
         };
     });
 
-    it('should return no error if there is a valid input', () => {
-        const { error } = createdUserValidator(user);
+    describe('baseValidator', () => {
+        it('should return no error if there is a valid input', () => {
+            const { error } = baseValidator().validate(user);
 
-        expect(error).toBeFalsy();
+            expect(error).toBeFalsy();
+        });
+
+        it('should return an error if name.first is less than 2 characters', () => {
+            user.name.first = 'a';
+
+            const { error } = baseValidator().validate(user);
+
+            expect(error).toBeTruthy();
+        });
+
+        it('should return an error if name.first is more than 50 characters', () => {
+            user.name.first = genString(51);
+
+            const { error } = baseValidator().validate(user);
+
+            expect(error).toBeTruthy();
+        });
+
+        it('should return an error if name.patronymic is less than 2 characters', () => {
+            user.name.patronymic = 'a';
+
+            const { error } = baseValidator().validate(user);
+
+            expect(error).toBeTruthy();
+        });
+
+        it('should return an error if name.patronymic is more than 50 characters', () => {
+            user.name.patronymic = genString(51);
+
+            const { error } = baseValidator().validate(user);
+
+            expect(error).toBeTruthy();
+        });
+
+        it('should return an error if name.last is less than 2 characters', () => {
+            user.name.last = 'a';
+
+            const { error } = baseValidator().validate(user);
+
+            expect(error).toBeTruthy();
+        });
+
+        it('should return an error if name.last is more than 50 characters', () => {
+            user.name.last = genString(51);
+
+            const { error } = baseValidator().validate(user);
+
+            expect(error).toBeTruthy();
+        });
+
+
+        it('should return an error if login is less than 3 characters', () => {
+            user.login = genString(2);
+
+            const { error } = baseValidator().validate(user);
+
+            expect(error).toBeTruthy();
+        });
+
+        it('should return an error if login is more than 50 characters', () => {
+            user.login = genString(51);
+
+            const { error } = baseValidator().validate(user);
+
+            expect(error).toBeTruthy();
+        });
+
+        it('should return an error if phone is more than 50 characters', () => {
+            user.phone = genString(51);
+
+            const { error } = baseValidator().validate(user);
+
+            expect(error).toBeTruthy();
+        });
+
+        it('should return an error if there is an unexpected field in the user object', () => {
+            user.mockUnexpectedField = 'test';
+
+            const { error } = baseValidator().validate(user);
+
+            expect(error).toBeTruthy();
+        });
     });
 
-    it('should return an error if name.first is less than 2 characters', () => {
-        user.name.first = 'a';
+    describe('createdUserValidator', () => {
+        it('should return no error if it is valid input', () => {
+            user.password = '12345';
 
-        const { error } = createdUserValidator(user);
+            const { error } = createdUserValidator(user);
 
-        expect(error).toBeTruthy();
+            expect(error).toBeFalsy();
+        });
+
+        it('should return an error if password is not exist', () => {
+            user.password = undefined;
+
+            const { error } = createdUserValidator(user);
+
+            expect(error).toBeTruthy();
+        });
+
+        it('should return an error if password is less than 3 characters', () => {
+            user.password = '12';
+
+            const { error } = createdUserValidator(user);
+
+            expect(error).toBeTruthy();
+        });
+
+        it('should return an error if password is more than 50 characters', () => {
+            user.password = genString(51);
+
+            const { error } = createdUserValidator(user);
+
+            expect(error).toBeTruthy();
+        });
     });
 
-    it('should return an error if name.first is more than 50 characters', () => {
-        user.name.first = genString(51);
-
-        const { error } = createdUserValidator(user);
-
-        expect(error).toBeTruthy();
-    });
-
-    it('should return an error if name.patronymic is less than 2 characters', () => {
-        user.name.patronymic = 'a';
-
-        const { error } = createdUserValidator(user);
-
-        expect(error).toBeTruthy();
-    });
-
-    it('should return an error if name.patronymic is more than 50 characters', () => {
-        user.name.patronymic = genString(51);
-
-        const { error } = createdUserValidator(user);
-
-        expect(error).toBeTruthy();
-    });
-
-    it('should return an error if name.last is less than 2 characters', () => {
-        user.name.last = 'a';
-
-        const { error } = createdUserValidator(user);
-
-        expect(error).toBeTruthy();
-    });
-
-    it('should return an error if name.last is more than 50 characters', () => {
-        user.name.last = genString(51);
-
-        const { error } = createdUserValidator(user);
-
-        expect(error).toBeTruthy();
-    });
-
-    it('should return an error if password is less than 3 characters', () => {
-        user.password = '12';
-
-        const { error } = createdUserValidator(user);
-
-        expect(error).toBeTruthy();
-    });
-
-    it('should return an error if password is more than 50 characters', () => {
-        user.password = genString(51);
-
-        const { error } = createdUserValidator(user);
-
-        expect(error).toBeTruthy();
-    });
-
-    it('should return an error if login is less than 3 characters', () => {
-        user.login = genString(2);
-
-        const { error } = createdUserValidator(user);
-
-        expect(error).toBeTruthy();
-    });
-
-    it('should return an error if login is more than 50 characters', () => {
-        user.login = genString(51);
-
-        const { error } = createdUserValidator(user);
-
-        expect(error).toBeTruthy();
-    });
-
-    it('should return an error if phone is more than 50 characters', () => {
-        user.phone = genString(51);
-
-        const { error } = createdUserValidator(user);
-
-        expect(error).toBeTruthy();
-    });
 });
