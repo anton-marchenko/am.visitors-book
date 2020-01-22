@@ -1,4 +1,4 @@
-const { User, validator } = require('../../../models/user');
+const { User, createdUserValidator } = require('../../../models/user');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const mongoose = require('mongoose');
@@ -86,7 +86,7 @@ describe('user model validation', () => {
     });
 
     it('should return no error if there is a valid input', () => {
-        const { error } = validator(user);
+        const { error } = createdUserValidator(user);
 
         expect(error).toBeFalsy();
     });
@@ -94,7 +94,7 @@ describe('user model validation', () => {
     it('should return an error if name.first is less than 2 characters', () => {
         user.name.first = 'a';
 
-        const { error } = validator(user);
+        const { error } = createdUserValidator(user);
 
         expect(error).toBeTruthy();
     });
@@ -102,7 +102,7 @@ describe('user model validation', () => {
     it('should return an error if name.first is more than 50 characters', () => {
         user.name.first = genString(51);
 
-        const { error } = validator(user);
+        const { error } = createdUserValidator(user);
 
         expect(error).toBeTruthy();
     });
@@ -110,7 +110,7 @@ describe('user model validation', () => {
     it('should return an error if name.patronymic is less than 2 characters', () => {
         user.name.patronymic = 'a';
 
-        const { error } = validator(user);
+        const { error } = createdUserValidator(user);
 
         expect(error).toBeTruthy();
     });
@@ -118,7 +118,7 @@ describe('user model validation', () => {
     it('should return an error if name.patronymic is more than 50 characters', () => {
         user.name.patronymic = genString(51);
 
-        const { error } = validator(user);
+        const { error } = createdUserValidator(user);
 
         expect(error).toBeTruthy();
     });
@@ -126,7 +126,7 @@ describe('user model validation', () => {
     it('should return an error if name.last is less than 2 characters', () => {
         user.name.last = 'a';
 
-        const { error } = validator(user);
+        const { error } = createdUserValidator(user);
 
         expect(error).toBeTruthy();
     });
@@ -134,7 +134,7 @@ describe('user model validation', () => {
     it('should return an error if name.last is more than 50 characters', () => {
         user.name.last = genString(51);
 
-        const { error } = validator(user);
+        const { error } = createdUserValidator(user);
 
         expect(error).toBeTruthy();
     });
@@ -142,7 +142,7 @@ describe('user model validation', () => {
     it('should return an error if password is less than 3 characters', () => {
         user.password = '12';
 
-        const { error } = validator(user);
+        const { error } = createdUserValidator(user);
 
         expect(error).toBeTruthy();
     });
@@ -150,7 +150,7 @@ describe('user model validation', () => {
     it('should return an error if password is more than 50 characters', () => {
         user.password = genString(51);
 
-        const { error } = validator(user);
+        const { error } = createdUserValidator(user);
 
         expect(error).toBeTruthy();
     });
@@ -158,7 +158,7 @@ describe('user model validation', () => {
     it('should return an error if login is less than 3 characters', () => {
         user.login = genString(2);
 
-        const { error } = validator(user);
+        const { error } = createdUserValidator(user);
 
         expect(error).toBeTruthy();
     });
@@ -166,7 +166,7 @@ describe('user model validation', () => {
     it('should return an error if login is more than 50 characters', () => {
         user.login = genString(51);
 
-        const { error } = validator(user);
+        const { error } = createdUserValidator(user);
 
         expect(error).toBeTruthy();
     });
@@ -174,7 +174,7 @@ describe('user model validation', () => {
     it('should return an error if phone is more than 50 characters', () => {
         user.phone = genString(51);
 
-        const { error } = validator(user);
+        const { error } = createdUserValidator(user);
 
         expect(error).toBeTruthy();
     });

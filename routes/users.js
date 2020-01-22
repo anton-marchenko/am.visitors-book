@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { User, validator } = require('../models/user');
+const {
+    User,
+    createdUserValidator,
+    editedUserValidator
+} = require('../models/user');
 const {
     auth,
     allowedFor,
@@ -10,12 +14,16 @@ const {
 
 const NOT_FOUND_MSG = 'The user with the given ID was not found.';
 
-const createUserMiddleware = [auth, allowedFor(['admin']), validate(validator)];
+const createUserMiddleware = [
+    auth,
+    allowedFor(['admin']),
+    validate(createdUserValidator)
+];
 const editUserMiddleware = [
-    auth, 
-    allowedFor(['admin']), 
+    auth,
+    allowedFor(['admin']),
     validateObjectId,
-    validate(validator)
+    validate(editedUserValidator)
 ];
 
 router.get('/', [auth, allowedFor(['admin'])], async (req, res) => {

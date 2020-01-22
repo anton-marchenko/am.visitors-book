@@ -112,20 +112,33 @@ userSchema.virtual('fullName').get(function () {
 
 const User = mongoose.model('User', userSchema);
 
-function validateUser(user) {
-    const schema = {
+const baseValidator = () => {
+    return Joi.object({
         name: {
             first: Joi.string().min(2).max(50).required(),
             patronymic: Joi.string().min(2).max(50).required(),
             last: Joi.string().min(2).max(50).required()
         },
         phone: Joi.string().max(50),
-        password: Joi.string().min(3).max(50).required(),
         login: Joi.string().min(3).max(50).required()
-    }
+    });
+};
 
-    return Joi.object(schema).validate(user)
+const withPasswordValidation = (validator) => {
+    return validator().append({
+        password: Joi.string().min(3).max(50).required()
+    });
+};
+
+const editedUserValidator = (user) => {
+    return withPasswordValidation(baseValidator).validate(user)
+};
+
+function createdUserValidator(user) {
+    return withPasswordValidation(baseValidator).validate(user)
 }
 
 exports.User = User;
-exports.validator = validateUser
+exports.baseValidator = baseValidator;
+exports.createdUserValidator = createdUserValidator;
+exports.editedUserValidator = editedUserValidator;
