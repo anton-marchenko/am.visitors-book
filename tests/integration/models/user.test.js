@@ -12,28 +12,37 @@ const mockUserData = () => ({
     password: 'test'
 });
 
-describe('user model - createNewUser()', () => {
+describe('user model create / update', () => {
     beforeEach(() => { server = require('../../../index'); });
     afterEach(async () => {
         await server.close();
         await User.deleteMany({});
     });
 
-    it('should save the user', async () => {
-        const userData = mockUserData();
-
-        await User.createNewUser(userData);
-        const user = await User.findOne({ login: userData.login });
-
-        expect(user).not.toBeNull();
+    describe('createNewUser()', () => {
+        it('should save the user', async () => {
+            const userData = mockUserData();
+    
+            await User.createNewUser(userData);
+            const user = await User.findOne({ login: userData.login });
+    
+            expect(user).not.toBeNull();
+        });
+    
+        it('should return new user', async () => {
+            const userData = mockUserData();
+    
+            const user = await User.createNewUser(userData);
+    
+            expect(user).toHaveProperty('_id');
+            expect(user).toHaveProperty('login', userData.login);
+        });
     });
 
-    it('should return new user', async () => {
-        const userData = mockUserData();
-
-        const user = await User.createNewUser(userData);
-
-        expect(user).toHaveProperty('_id');
-        expect(user).toHaveProperty('login', userData.login);
+    describe('updateUser()', () => {
+        it.todo('should update the user');
+        it.todo('should return null if the user is not found');
+        it.todo('should return updated user if it is successful updating');
     });
+
 });
