@@ -18,15 +18,17 @@ describe('auth middleware', () => {
                 'role2'
             ]
         };
-        token = new User(user).generateAuthToken(); 
+        token = new User(user).generateAuthToken();
     });
 
     const exec = () => {
         req = {
             header: jest.fn().mockReturnValue(token)
         };
-        const res = {};
-        const next = jest.fn();
+        next = jest.fn();
+        send = jest.fn();
+        status = jest.fn().mockReturnValue({ send });
+        const res = { status };
 
         auth(req, res, next);
     }
@@ -36,5 +38,16 @@ describe('auth middleware', () => {
 
         expect(req).toHaveProperty('user');
         expect(req.user).toMatchObject(user);
+    });
+
+    it('should return 401 if the token is not provided', () => {
+        token = '';
+
+        exec();
+
+        expect(next).not.toHaveBeenCalled();
+        expect(status).toHaveBeenCalled();
+        expect(send).toHaveBeenCalled();
+        expect(status.mock.calls[0][0]).toBe(401);
     });
 });
