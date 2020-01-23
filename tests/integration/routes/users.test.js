@@ -251,7 +251,20 @@ describe('/api/users', () => {
             expect(res.status).toBe(400);
         });
 
-        it.todo('should  update the user if input is valid');
-        it.todo('should return the updated user if input is valid');
+        it('should  update the user if input is valid', async () => {
+            await exec();
+
+            const updatedUser = await User.findById(id);
+
+            expect(updatedUser.login).toBe(editedUserData.login);
+            expect(updatedUser.name).toMatchObject(editedUserData.name);
+        });
+
+        it('should return the updated user if input is valid', async () => {
+            const res = await exec();
+
+            expect(res.status).toBe(200);
+            expect(res.body).toHaveProperty('login', editedUserData.login);
+        });
     });
 });

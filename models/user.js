@@ -106,6 +106,37 @@ userSchema.statics.createNewUser = async function ({
     return this.getPublicData(user);
 }
 
+userSchema.statics.updateUser = async function (id, {
+    name: { first, patronymic, last },
+    login,
+    password: plainPassword,
+    phone
+}) {
+    const updatedData = {
+        name: { first, patronymic, last },
+        login
+    };
+
+    if (plainPassword !== undefined) {
+        updatedData.password = await generateHashedPassword(plainPassword);
+    }
+
+    // Needs to move this logic to external builder
+    if (phone !== undefined) {
+        updatedData.phone = phone;
+    }
+
+    const user = await this.findByIdAndUpdate(
+        id,
+        updatedData,
+        { 'new': true }
+    );
+
+    if (!user) return;
+
+    return this.getPublicData(user);
+}
+
 userSchema.virtual('fullName').get(function () {
     return `${this.name.first} ${this.name.patronymic} ${this.name.last}`;
 });

@@ -58,11 +58,11 @@ router.post('/', createUserMiddleware, async (req, res) => {
 });
 
 router.put('/:id', editUserMiddleware, async (req, res) => {
-    const user = await User.findById(req.params.id);
+    const user = await User.updateUser(req.params.id, req.body);
 
     if (!user) return res.status(404).send(NOT_FOUND_MSG);
 
-    res.status(200).send('OK');
+    res.status(200).send(user);
 });
 
 module.exports = router;
