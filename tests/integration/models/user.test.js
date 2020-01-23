@@ -127,5 +127,16 @@ describe('user model create / update', () => {
             expect(updatedUser).toHaveProperty('phone');
             expect(updatedUser.phone).toBe(userData.phone);
         });
+
+        it('should change a phone if it is defined in input data', async () => {
+            editedUserData.phone = 'edited';
+
+            await User.updateUser(id, editedUserData);
+
+            const updatedUser = await User.findById(id);
+
+            expect(updatedUser).toHaveProperty('phone');
+            expect(updatedUser.phone).toBe(editedUserData.phone);
+        });
     });
 });
