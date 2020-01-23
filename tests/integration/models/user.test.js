@@ -2,6 +2,16 @@ const { User } = require('../../../models/user');
 
 let server;
 
+const mockUserData = () => ({
+    name: {
+        first: 'test',
+        patronymic: 'test',
+        last: 'test'
+    },
+    login: 'test',
+    password: 'test'
+});
+
 describe('user model - createNewUser()', () => {
     beforeEach(() => { server = require('../../../index'); });
     afterEach(async () => {
@@ -10,15 +20,7 @@ describe('user model - createNewUser()', () => {
     });
 
     it('should save the user', async () => {
-        const userData = {
-            name: {
-                first: 'test',
-                patronymic: 'test',
-                last: 'test'
-            },
-            login: 'test',
-            password: 'test'
-        };
+        const userData = mockUserData();
 
         await User.createNewUser(userData);
         const user = await User.findOne({ login: userData.login });
@@ -27,15 +29,7 @@ describe('user model - createNewUser()', () => {
     });
 
     it('should return new user', async () => {
-        const userData = {
-            name: {
-                first: 'test',
-                patronymic: 'test',
-                last: 'test'
-            },
-            login: 'test',
-            password: 'test'
-        };
+        const userData = mockUserData();
 
         const user = await User.createNewUser(userData);
 
