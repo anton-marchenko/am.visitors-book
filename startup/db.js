@@ -6,7 +6,7 @@ module.exports = () => {
     const db = config.get('db');
 
     mongoose.connect(db, {
-        useFindAndModify: false,
+        useFindAndModify: false, // TODO - needs reserach
         useCreateIndex: true,
         useNewUrlParser: true,
         useUnifiedTopology: true
