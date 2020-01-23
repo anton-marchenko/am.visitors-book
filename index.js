@@ -1,10 +1,11 @@
 require('dotenv').config();
 const winston = require('winston');
 const express = require('express');
+const config = require('config');
 const app = express();
 const startup = require('./startup');
 
-startup.config();
+startup.config(config);
 startup.logging();
 startup.routes(app);
 startup.db();
