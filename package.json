@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "jest --verbose --watchAll --detectOpenHandles"
+    "test": "jest --verbose --watchAll --detectOpenHandles",
+    "test:coverage": "jest --verbose --watchAll --detectOpenHandles --coverage"
   },
   "author": "Anton Marchenko",
   "license": "ISC",
