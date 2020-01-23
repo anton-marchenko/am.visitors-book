@@ -9,7 +9,7 @@ const mockUserData = () => ({
         last: 'test'
     },
     login: 'test',
-    password: 'test'
+    password: '12345'
 });
 
 describe('user model create / update', () => {
