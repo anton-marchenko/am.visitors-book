@@ -3,7 +3,7 @@ const path = require('path');
 const winston = require('winston');
 require('express-async-errors');
 
-module.exports = () => {
+module.exports = (appProcess) => {
     const logPath = config.get('logPath');
 
     winston.handleExceptions(
@@ -16,7 +16,8 @@ module.exports = () => {
         })
     );
 
-    process.on('unhandledRejection', (ex) => {
+    // TODO - it is not responsibility of logger. Needs to move to separate module
+    appProcess.on('unhandledRejection', (ex) => {
         throw ex;
     });
 
