@@ -12,6 +12,6 @@ describe('error middleware', () => {
 
         expect(status).toHaveBeenCalled();
         expect(send).toHaveBeenCalled();
-        expect(status.mock.calls[0][0]).toBe(500);
+        expect(status).toBeCalledWith(500);
     });
 });

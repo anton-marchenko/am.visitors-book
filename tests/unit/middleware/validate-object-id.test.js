@@ -29,7 +29,7 @@ describe('validateObjectId middleware', () => {
 
         expect(status).toHaveBeenCalled();
         expect(send).toHaveBeenCalled();
-        expect(status.mock.calls[0][0]).toBe(404);
+        expect(status).toBeCalledWith(404);
     });
 
     it('should call next if there is a valid id in request', () => {

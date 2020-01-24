@@ -31,9 +31,9 @@ describe('validate middleware', () => {
         exec();
 
         expect(validator).toHaveBeenCalled();
-        expect(validator.mock.calls[0][0]).toBe(reqBody);
+        expect(validator).toBeCalledWith(reqBody);
         expect(send).toHaveBeenCalled();
-        expect(status.mock.calls[0][0]).toBe(400);
+        expect(status).toBeCalledWith(400);
     });
 
     it('should call next() if there is a valid input', () => {
@@ -44,7 +44,7 @@ describe('validate middleware', () => {
         exec();
 
         expect(validator).toHaveBeenCalled();
-        expect(validator.mock.calls[0][0]).toBe(reqBody);
+        expect(validator).toBeCalledWith(reqBody);
         expect(next).toHaveBeenCalled();
     });
 });

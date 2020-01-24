@@ -32,7 +32,7 @@ describe('allowedFor middleware', () => {
 
         expect(status).toHaveBeenCalled();
         expect(send).toHaveBeenCalled();
-        expect(status.mock.calls[0][0]).toBe(403);
+        expect(status).toBeCalledWith(403);
     });
 
     it('should call next if user has some of the given roles', () => {

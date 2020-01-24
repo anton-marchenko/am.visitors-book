@@ -48,7 +48,7 @@ describe('auth middleware', () => {
         expect(next).not.toHaveBeenCalled();
         expect(status).toHaveBeenCalled();
         expect(send).toHaveBeenCalled();
-        expect(status.mock.calls[0][0]).toBe(401);
+        expect(status).toBeCalledWith(401);
     });
 
     it('should return 400 if the token is not valid', () => {
@@ -59,6 +59,6 @@ describe('auth middleware', () => {
         expect(next).not.toHaveBeenCalled();
         expect(status).toHaveBeenCalled();
         expect(send).toHaveBeenCalled();
-        expect(status.mock.calls[0][0]).toBe(400);
+        expect(status).toBeCalledWith(400);
     });
 });
