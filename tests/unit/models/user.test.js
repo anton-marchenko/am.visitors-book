@@ -156,6 +156,14 @@ describe('user model validation', () => {
             expect(error).toBeTruthy();
         });
 
+        it('should return an error if cardId is more than 50 characters', () => {
+            user.cardId = genString(51);
+
+            const { error } = baseValidator().validate(user);
+
+            expect(error).toBeTruthy();
+        });
+
         it('should return an error if there is an unexpected field in the user object', () => {
             user.mockUnexpectedField = 'test';
 

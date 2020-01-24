@@ -10,6 +10,7 @@ const mockUserData = () => ({
         last: 'test'
     },
     login: 'test',
+    cardId: '12345',
     password: '12345'
 });
 
@@ -37,6 +38,36 @@ describe('user model create / update', () => {
 
             expect(user).toHaveProperty('_id');
             expect(user).toHaveProperty('login', userData.login);
+        });
+
+        it('should return all public data', async () => {
+            const mockPublicData = {
+                name: {
+                    first: 'test',
+                    patronymic: 'test',
+                    last: 'test'
+                },
+                login: 'test',
+                phone: '12345',
+                cardId: '12345',
+            };
+            const userData = {
+                ...mockPublicData,
+                password: '12345'
+            };
+
+            const user = await User.createNewUser(userData);
+
+            expect(user).toEqual(expect.objectContaining(mockPublicData));  
+        });
+
+        it('should save a cardId if it is provided', async () => {
+            const userData = mockUserData();
+
+            await User.createNewUser(userData);
+            const user = await User.findOne({ login: userData.login });
+            
+            expect(user).toHaveProperty('cardId', '12345');
         });
     });
 
@@ -137,6 +168,28 @@ describe('user model create / update', () => {
 
             expect(updatedUser).toHaveProperty('phone');
             expect(updatedUser.phone).toBe(editedUserData.phone);
+        });
+
+        it('should not change a cardId if it is not defined in input data', async () => {
+            editedUserData.cardId = undefined;
+
+            await User.updateUser(id, editedUserData);
+
+            const updatedUser = await User.findById(id);
+
+            expect(updatedUser).toHaveProperty('cardId');
+            expect(updatedUser.cardId).toBe(userData.cardId);
+        });
+
+        it('should change a cardId if it is defined in input data', async () => {
+            editedUserData.cardId = 'edited';
+
+            await User.updateUser(id, editedUserData);
+
+            const updatedUser = await User.findById(id);
+
+            expect(updatedUser).toHaveProperty('cardId');
+            expect(updatedUser.cardId).toBe(editedUserData.cardId);
         });
     });
 });

@@ -47,11 +47,13 @@ const userSchema = new mongoose.Schema({
         type: String,
         maxlength: 50
     },
+    cardId: {
+        type: String,
+        maxlength: 50
+    },
     roles: [String],
     blocked: Boolean,
 });
-
-
 
 userSchema.statics.publicFields = function () {
     return [
@@ -60,6 +62,7 @@ userSchema.statics.publicFields = function () {
         'phone',
         'login',
         'roles',
+        'cardId',
         'blocked'
     ]
 }
@@ -90,6 +93,7 @@ userSchema.statics.createNewUser = async function ({
     name: { first, patronymic, last },
     login,
     password: plainPassword,
+    cardId,
     phone
 }) {
     const hashedPassword = await generateHashedPassword(plainPassword);
@@ -98,6 +102,7 @@ userSchema.statics.createNewUser = async function ({
         name: { first, patronymic, last },
         login,
         password: hashedPassword,
+        cardId,
         phone
     });
 
@@ -110,6 +115,7 @@ userSchema.statics.updateUser = async function (id, {
     name: { first, patronymic, last },
     login,
     password: plainPassword,
+    cardId,
     phone
 }) {
     const updatedData = {
@@ -124,6 +130,11 @@ userSchema.statics.updateUser = async function (id, {
     // Needs to move this logic to external builder
     if (phone !== undefined) {
         updatedData.phone = phone;
+    }
+
+    // Needs to move this logic to external builder
+    if (cardId !== undefined) {
+        updatedData.cardId = cardId;
     }
 
     const user = await this.findByIdAndUpdate(
@@ -147,6 +158,7 @@ const baseValidator = () => {
             last: Joi.string().min(2).max(50).required()
         },
         phone: Joi.string().max(50),
+        cardId: Joi.string().max(50),
         login: Joi.string().min(3).max(50).required()
     });
 };
