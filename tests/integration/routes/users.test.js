@@ -4,18 +4,15 @@ const { User } = require('../../../models/user');
 
 let server;
 
-const mockUserData = (cb) => {
-    const data = {
-        name: {
-            first: 'test',
-            patronymic: 'test',
-            last: 'test'
-        },
-        password: '12345',
-        login: 'test'
-    };
-    return cb ? cb(data) : data
-};
+const mockUserData = () => ({
+    name: {
+        first: 'test',
+        patronymic: 'test',
+        last: 'test'
+    },
+    password: '12345',
+    login: 'test'
+});
 
 describe('/api/users', () => {
     beforeEach(() => { server = require('../../../index'); });
@@ -55,10 +52,13 @@ describe('/api/users', () => {
         });
 
         it('should return all users', async () => {
-            const users = [
-                mockUserData((user) => ({ ...user, login: user.login + '1' })),
-                mockUserData((user) => ({ ...user, login: user.login + '2' })),
-            ];
+            const user1 = mockUserData();
+            user1.login = user1.login + '1';
+
+            const user2 = mockUserData();
+            user2.login = user1.login + '2';
+
+            const users = [user1, user2];
 
             await User.collection.insertMany(users);
 
