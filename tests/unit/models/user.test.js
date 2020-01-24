@@ -23,19 +23,6 @@ describe('user model', () => {
 
         expect(decoded).toMatchObject(payload);
     });
-
-    it('should return fullname', () => {
-        const name = {
-            first: 'First',
-            patronymic: 'Patronymic',
-            last: 'Last'
-        };
-        const user = new User({ name });
-
-        expect(user.fullName).toMatch(name.first);
-        expect(user.fullName).toMatch(name.patronymic);
-        expect(user.fullName).toMatch(name.last);
-    });
 });
 
 describe('user model public data', () => {

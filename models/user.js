@@ -137,10 +137,6 @@ userSchema.statics.updateUser = async function (id, {
     return this.getPublicData(user);
 }
 
-userSchema.virtual('fullName').get(function () {
-    return `${this.name.first} ${this.name.patronymic} ${this.name.last}`;
-});
-
 const User = mongoose.model('User', userSchema);
 
 const baseValidator = () => {
