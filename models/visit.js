@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Joi = require('@hapi/joi');
 Joi.objectId = require('joi-objectid')(Joi);
+const { User } = require('./user');
 
 const visitSchema = new mongoose.Schema({
     userId: {
@@ -8,6 +9,14 @@ const visitSchema = new mongoose.Schema({
         required: true
     }
 });
+
+visitSchema.statics.createNewVisit = async function (userId) {
+    const visit = new Visit({ userId });
+
+    await visit.save();
+
+    return visit;
+}
 
 const Visit = mongoose.model('Visit', visitSchema);
 
