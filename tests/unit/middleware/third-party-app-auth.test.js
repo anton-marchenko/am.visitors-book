@@ -7,7 +7,6 @@ describe('thirdPartyAppAuth middleware', () => {
         send,
         status,
         req,
-        user,
         token;
 
     beforeEach(() => {
@@ -19,7 +18,7 @@ describe('thirdPartyAppAuth middleware', () => {
         token = new ThirdPartyAccess(accessData).generateAuthToken();
     });
 
-    const exec = () => {
+    const exec = async () => {
         req = {
             header: jest.fn().mockReturnValue(token)
         };
@@ -28,21 +27,13 @@ describe('thirdPartyAppAuth middleware', () => {
         status = jest.fn().mockReturnValue({ send });
         const res = { status };
 
-        thirdPartyAppAuth(req, res, next);
+        await thirdPartyAppAuth(req, res, next);
     }
 
-    it('should call next() if token is valid', () => {
-        exec();
-
-        expect(next).toHaveBeenCalled();
-    });
-
-    it.todo('should return 401 if the token is expired');
-
-    it('should return 401 if the token is not provided', () => {
+    it('should return 401 if the token is not provided', async () => {
         token = '';
 
-        exec();
+        await exec();
 
         expect(next).not.toHaveBeenCalled();
         expect(status).toHaveBeenCalled();
@@ -50,10 +41,10 @@ describe('thirdPartyAppAuth middleware', () => {
         expect(status).toBeCalledWith(401);
     });
 
-    it('should return 400 if the token is not valid', () => {
+    it('should return 400 if the token is not valid', async () => {
         token = 1;
 
-        exec();
+        await exec();
 
         expect(next).not.toHaveBeenCalled();
         expect(status).toHaveBeenCalled();
