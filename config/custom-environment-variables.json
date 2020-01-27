@@ -1,5 +1,5 @@
 {
-    "jwtSecret": "visitsBook_jwtSecret",
-    "logPath": "visitsBook_logPath",
-    "db": "visitsBook_db"
+    "jwtSecret": "visitorsBook_jwtSecret",
+    "logPath": "visitorsBook_logPath",
+    "db": "visitorsBook_db"
 }

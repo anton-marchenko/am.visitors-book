@@ -1,4 +1,4 @@
 {
     "jwtSecret": "1234",
-    "db": "mongodb://localhost/visits-book_test"
+    "db": "mongodb://localhost/visitors-book_test"
 }
