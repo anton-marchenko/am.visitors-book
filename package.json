@@ -1,7 +1,7 @@
 {
-  "name": "uslada-back",
+  "name": "visitors-book",
   "version": "1.0.0",
-  "description": "Backend for Uslada project",
+  "description": "Visitors Book for a recreational center",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
