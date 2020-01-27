@@ -11,8 +11,8 @@ describe('ThirdPartyAccess model', () => {
 
         it('should return valid JWT token for a third party app', () => {
             const payload = {
-                _id: new mongoose.Types.ObjectId().toHexString(),
-                createdBy: new mongoose.Types.ObjectId().toHexString(),
+                _id: mongoose.Types.ObjectId().toHexString(),
+                createdBy: mongoose.Types.ObjectId().toHexString(),
                 appName: 'test'
             };
 

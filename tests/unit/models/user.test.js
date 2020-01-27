@@ -11,7 +11,7 @@ const {
 describe('user model', () => {
     it('should return a valid JWT', () => {
         const payload = {
-            _id: new mongoose.Types.ObjectId().toHexString(),
+            _id: mongoose.Types.ObjectId().toHexString(),
             roles: [
                 'role1',
                 'role2'
