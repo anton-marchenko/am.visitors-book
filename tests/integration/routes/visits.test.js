@@ -51,7 +51,14 @@ describe('/api/visits', () => {
             expect(res.status).toBe(201);
         });
 
-        it.todo('should return new visit if input is valid');
+        it('should return new visit if input is valid', async () => {
+            const res = await exec();
+
+            expect(Object.keys(res.body)).toEqual(
+                expect.arrayContaining(['_id', 'userId'])
+            );
+        });
+
         it.todo('should return 400 if the token is not valid');
         it.todo('should return 401 if the client is not logged in');
         it.todo('should return 403 if permission denied');

@@ -6,7 +6,11 @@ const { Visit } = require('../models/visit');
 router.post('/', async (req, res) => {
     const { cardId } = req.body;
 
-    res.status(201).send('OK');
+    const user = await User.findOne({ cardId });
+
+    const visit = await Visit.createNewVisit(user);
+
+    res.status(201).send(visit);
 });
 
 module.exports = router;
