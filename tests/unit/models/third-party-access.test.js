@@ -9,7 +9,20 @@ const {
 describe('ThirdPartyAccess model', () => {
     describe('JWT', () => {
 
-        it.todo('should return valid JWT token for a third party app');
+        it('should return valid JWT token for a third party app', () => {
+            const payload = {
+                _id: new mongoose.Types.ObjectId().toHexString(),
+                createdBy: new mongoose.Types.ObjectId().toHexString(),
+                appName: 'test'
+            };
+
+            const access = new ThirdPartyAccess(payload);
+            const token = access.generateAuthToken();
+
+            const decoded = jwt.verify(token, config.get('jwtSecret'));
+
+            expect(decoded).toMatchObject(payload);
+        });
     });
 
     describe('model validation', () => {

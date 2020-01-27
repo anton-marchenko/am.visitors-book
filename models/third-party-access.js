@@ -17,6 +17,16 @@ const thirdPartyAccessSchema = new mongoose.Schema({
     }
 });
 
+thirdPartyAccessSchema.methods.generateAuthToken = function () {
+    const token = jwt.sign({
+        _id: this._id,
+        createdBy: this.createdBy,
+        appName: this.appName,
+    }, config.get('jwtSecret'));
+
+    return token;
+}
+
 const ThirdPartyAccess = mongoose.model('ThirdPartyAccess', thirdPartyAccessSchema);
 
 const validator = (access) => {
