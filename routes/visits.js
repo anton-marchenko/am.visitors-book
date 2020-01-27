@@ -8,6 +8,8 @@ router.post('/', async (req, res) => {
 
     const user = await User.findOne({ cardId });
 
+    if (!user) return res.status(404).send('An user has not been found for given card ID.');
+
     const visit = await Visit.createNewVisit(user);
 
     res.status(201).send(visit);

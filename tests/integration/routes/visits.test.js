@@ -17,6 +17,7 @@ const mockUserData = () => ({
 describe('/api/visits', () => {
     let server,
         token,
+        user,
         cardId;
 
     const exec = () => {
@@ -31,7 +32,7 @@ describe('/api/visits', () => {
 
         const userData = mockUserData();
         cardId = userData.cardId;
-        const user = new User(userData);
+        user = new User(userData);
         await user.save();
 
         token = new User({ roles: ['admin'] }).generateAuthToken();
@@ -62,6 +63,13 @@ describe('/api/visits', () => {
         it.todo('should return 400 if the token is not valid');
         it.todo('should return 401 if the client is not logged in');
         it.todo('should return 403 if permission denied');
-        it.todo('should return 404 if an user has not been found for given card ID');
+
+        it('should return 404 if an user has not been found for given card ID', async () => {
+            await user.delete();
+
+            const res = await exec();
+
+            expect(res.status).toBe(404);
+        });
     });
 });
