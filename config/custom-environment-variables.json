@@ -1,5 +1,5 @@
 {
-    "jwtSecret": "usladaBack_jwtSecret",
-    "logPath": "usladaBack_logPath",
-    "db": "usladaBack_db"
+    "jwtSecret": "visitsBook_jwtSecret",
+    "logPath": "visitsBook_logPath",
+    "db": "visitsBook_db"
 }
