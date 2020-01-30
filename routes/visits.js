@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const { User } = require('../models/user');
 const { Visit } = require('../models/visit');
+const { thirdPartyAppAuth } = require('../middleware');
 
-router.post('/', async (req, res) => {
+router.post('/', thirdPartyAppAuth, async (req, res) => {
     const { cardId } = req.body;
 
     const user = await User.findOne({ cardId });

@@ -2,6 +2,7 @@ const request = require('supertest');
 const mongoose = require('mongoose');
 const { Visit } = require('../../../models/visit');
 const { User } = require('../../../models/user');
+const { ThirdPartyAccess } = require('../../../models/third-party-access');
 
 const mockUserData = () => ({
     name: {
@@ -14,10 +15,16 @@ const mockUserData = () => ({
     password: '12345'
 });
 
+const mockAccessData = () => ({
+    createdBy: mongoose.Types.ObjectId().toHexString(),
+    appName: 'test'
+});
+
 describe('/api/visits', () => {
     let server,
         token,
         user,
+        access,
         cardId;
 
     const exec = () => {
@@ -32,10 +39,14 @@ describe('/api/visits', () => {
 
         const userData = mockUserData();
         cardId = userData.cardId;
+
         user = new User(userData);
         await user.save();
 
-        token = new User({ roles: ['admin'] }).generateAuthToken();
+        access = new ThirdPartyAccess(mockAccessData());
+        await access.save();
+
+        token = access.generateAuthToken();
     });
 
     afterEach(async () => {
@@ -60,9 +71,29 @@ describe('/api/visits', () => {
             );
         });
 
-        it.todo('should return 400 if the token is not valid');
-        it.todo('should return 401 if the client is not logged in');
-        it.todo('should return 403 if permission denied'); // By third party token only!
+        it('should return 400 if the token is not valid', async () => {
+            token = 1;
+
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+        });
+
+        it('should return 401 if the client is not logged in', async () => {
+            token = '';
+
+            const res = await exec();
+
+            expect(res.status).toBe(401);
+        });
+
+        it('should return 403 if permission denied', async () => {
+            await access.delete();
+
+            const res = await exec();
+
+            expect(res.status).toBe(403);
+        });
 
         it('should return 404 if an user has not been found for given card ID', async () => {
             await user.delete();
