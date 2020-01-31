@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const { Visit } = require('../../../models/visit');
 const { User } = require('../../../models/user');
 
