@@ -6,4 +6,8 @@ router.post('/tokens/validate', auth, async (req, res) => {
     return res.status(200).send('OK');
 });
 
+router.post('/third-party-app/tokens', async (req, res) => {
+    return res.status(200).send('OK');
+});
+
 module.exports = router;

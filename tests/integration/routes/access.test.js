@@ -65,6 +65,26 @@ describe('/api/access/third-party-app/tokens', () => {
     });
 
     describe('POST /', () => {
+        let token;
+
+        beforeEach(async () => {
+            server = require('../../../index');
+        });
+
+        afterEach(async () => {
+            await server.close();
+        });
+
+        const exec = async () => {
+            return await request(server)
+                .post('/api/access/third-party-app/tokens')
+                .set('x-auth-token', token);
+        };
+
+        beforeEach(() => {
+            token = new User().generateAuthToken();
+        });
+
         it.todo('should return new third party app token');
         it.todo('should return 400 if clients token is not valid');
         it.todo('should return 401 if a client is not logged in');
