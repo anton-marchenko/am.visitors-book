@@ -27,6 +27,21 @@ thirdPartyAccessSchema.methods.generateAuthToken = function () {
     return token;
 }
 
+thirdPartyAccessSchema.statics.createNewAccess = async function ({
+    createdBy,
+    appName
+}) {
+    const access = new ThirdPartyAccess({ createdBy, appName });
+
+    await access.save();
+
+    return {
+        _id: access._id,
+        createdBy: access.createdBy,
+        appName: access.appName
+    };
+}
+
 const ThirdPartyAccess = mongoose.model('ThirdPartyAccess', thirdPartyAccessSchema);
 
 const validator = (access) => {
