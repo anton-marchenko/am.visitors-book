@@ -5,7 +5,8 @@ const bcrypt = require('bcrypt');
 const {
     createdUserValidator,
     editedUserValidator,
-    signInUserValidator
+    signInUserValidator,
+    validatePassword
 } = require('./user.utils')
 
 // TODO move to user.utils
@@ -80,7 +81,6 @@ userSchema.methods.generateAuthToken = function () {
 
     return token;
 }
-
 
 userSchema.statics.getPublicData = function (user) {
     return this.publicFields()
@@ -159,3 +159,4 @@ exports.User = User;
 exports.createdUserValidator = createdUserValidator;
 exports.editedUserValidator = editedUserValidator;
 exports.signInUserValidator = signInUserValidator;
+exports.validatePassword = validatePassword;
