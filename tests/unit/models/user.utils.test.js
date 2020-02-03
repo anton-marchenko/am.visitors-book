@@ -7,6 +7,13 @@ const {
     signInUserValidator
 } = require('../../../models/user.utils');
 
+const mockInputValues = () => ([
+    null,
+    1,
+    [],
+    {}
+]);
+
 describe('user model validation', () => {
     const genString = (length) => new Array(length + 1).join('a');
     let user;
@@ -189,12 +196,6 @@ describe('user model validation', () => {
 
     describe('signInUserValidator', () => {
         let login, password;
-        const mockInputValues = [
-            null,
-            1,
-            [],
-            {}
-        ];
 
         beforeEach(() => {
             login = 'test';
@@ -223,7 +224,7 @@ describe('user model validation', () => {
         });
 
         it('should return an error if login is not a string', () => {
-            mockInputValues.forEach(data => {
+            mockInputValues().forEach(data => {
                 login = data;
 
                 const { error } = exec();
@@ -257,7 +258,7 @@ describe('user model validation', () => {
         });
 
         it('should return an error if password is not a string', () => {
-            mockInputValues.forEach(data => {
+            mockInputValues().forEach(data => {
                 password = data;
 
                 const { error } = exec();
