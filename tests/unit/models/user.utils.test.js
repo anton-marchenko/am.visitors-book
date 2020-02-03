@@ -184,4 +184,15 @@ describe('user model validation', () => {
         });
     });
 
+    describe('signInUserValidator', () => {
+        it.todo('should return no error if it is valid input');
+        it.todo('should return an error if login is not exist');
+        it.todo('should return an error if login is not a string');
+        it.todo('should return an error if login is less than 3 characters');
+        it.todo('should return an error if login is more than 50 characters');
+        it.todo('should return an error if password is not exist');
+        it.todo('should return an error if password is not a string');
+        it.todo('should return an error if password is less than 3 characters');
+        it.todo('should return an error if password is more than 50 characters');
+    });
 });
