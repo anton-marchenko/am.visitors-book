@@ -71,6 +71,16 @@ describe('user model validation', () => {
             expect(error).toBeTruthy();
         });
 
+        it('should return an error if name.patronymic is not a string', () => {
+            mockNonStringValues().forEach(value => {
+                user.name.patronymic = value;
+
+                const { error } = exec();
+
+                expect(error).toBeTruthy();
+            });
+        });
+
         it('should return an error if name.patronymic is less than 2 characters', () => {
             user.name.patronymic = 'a';
 
@@ -85,6 +95,16 @@ describe('user model validation', () => {
             const { error } = exec();
 
             expect(error).toBeTruthy();
+        });
+
+        it('should return an error if name.last is not a string', () => {
+            mockNonStringValues().forEach(value => {
+                user.name.last = value;
+
+                const { error } = exec();
+
+                expect(error).toBeTruthy();
+            });
         });
 
         it('should return an error if name.last is less than 2 characters', () => {
@@ -103,6 +123,15 @@ describe('user model validation', () => {
             expect(error).toBeTruthy();
         });
 
+        it('should return an error if login is not a string', () => {
+            mockNonStringValues().forEach(value => {
+                user.login = value;
+
+                const { error } = exec();
+
+                expect(error).toBeTruthy();
+            });
+        });
 
         it('should return an error if login is less than 3 characters', () => {
             user.login = genString(2);
@@ -120,12 +149,32 @@ describe('user model validation', () => {
             expect(error).toBeTruthy();
         });
 
+        it('should return an error if phone is not a string', () => {
+            mockNonStringValues().forEach(value => {
+                user.phone = value;
+
+                const { error } = exec();
+
+                expect(error).toBeTruthy();
+            });
+        });
+
         it('should return an error if phone is more than 50 characters', () => {
             user.phone = genString(51);
 
             const { error } = exec();
 
             expect(error).toBeTruthy();
+        });
+
+        it('should return an error if cardId is not a string', () => {
+            mockNonStringValues().forEach(value => {
+                user.cardId = value;
+
+                const { error } = exec();
+
+                expect(error).toBeTruthy();
+            });
         });
 
         it('should return an error if cardId is more than 50 characters', () => {
@@ -157,6 +206,16 @@ describe('user model validation', () => {
             const { error } = exec();
 
             expect(error).toBeFalsy();
+        });
+
+        it('should return an error if password is not a string', () => {
+            mockNonStringValues().forEach(value => {
+                user.password = value;
+
+                const { error } = exec();
+
+                expect(error).toBeTruthy();
+            });
         });
 
         it('should return an error if password is not exist', () => {
@@ -196,6 +255,16 @@ describe('user model validation', () => {
             const { error } = exec();
 
             expect(error).toBeFalsy();
+        });
+
+        it('should return an error if password is not a string', () => {
+            mockNonStringValues().forEach(value => {
+                user.password = value;
+
+                const { error } = exec();
+
+                expect(error).toBeTruthy();
+            });
         });
 
         it('should return no error if input is valid but password is not defined', () => {
