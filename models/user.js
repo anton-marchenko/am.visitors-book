@@ -4,7 +4,8 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const {
     createdUserValidator,
-    editedUserValidator
+    editedUserValidator,
+    signInUserValidator
 } = require('./user.utils')
 
 const generateHashedPassword = async (plainPassword) => {
@@ -156,3 +157,4 @@ const User = mongoose.model('User', userSchema);
 exports.User = User;
 exports.createdUserValidator = createdUserValidator;
 exports.editedUserValidator = editedUserValidator;
+exports.signInUserValidator = signInUserValidator;
