@@ -34,16 +34,31 @@ describe('user model validation', () => {
     });
 
     describe('baseValidator', () => {
+
+        const exec = () => {
+            return baseValidator().validate(user);
+        }
+
         it('should return no error if there is a valid input', () => {
-            const { error } = baseValidator().validate(user);
+            const { error } = exec();
 
             expect(error).toBeFalsy();
+        });
+
+        it('should return an error if name.first is not a string', () => {
+            mockNonStringValues().forEach(value => {
+                user.name.first = value;
+
+                const { error } = exec();
+
+                expect(error).toBeTruthy();
+            });
         });
 
         it('should return an error if name.first is less than 2 characters', () => {
             user.name.first = 'a';
 
-            const { error } = baseValidator().validate(user);
+            const { error } = exec();
 
             expect(error).toBeTruthy();
         });
@@ -51,7 +66,7 @@ describe('user model validation', () => {
         it('should return an error if name.first is more than 50 characters', () => {
             user.name.first = genString(51);
 
-            const { error } = baseValidator().validate(user);
+            const { error } = exec();
 
             expect(error).toBeTruthy();
         });
@@ -59,7 +74,7 @@ describe('user model validation', () => {
         it('should return an error if name.patronymic is less than 2 characters', () => {
             user.name.patronymic = 'a';
 
-            const { error } = baseValidator().validate(user);
+            const { error } = exec();
 
             expect(error).toBeTruthy();
         });
@@ -67,7 +82,7 @@ describe('user model validation', () => {
         it('should return an error if name.patronymic is more than 50 characters', () => {
             user.name.patronymic = genString(51);
 
-            const { error } = baseValidator().validate(user);
+            const { error } = exec();
 
             expect(error).toBeTruthy();
         });
@@ -75,7 +90,7 @@ describe('user model validation', () => {
         it('should return an error if name.last is less than 2 characters', () => {
             user.name.last = 'a';
 
-            const { error } = baseValidator().validate(user);
+            const { error } = exec();
 
             expect(error).toBeTruthy();
         });
@@ -83,7 +98,7 @@ describe('user model validation', () => {
         it('should return an error if name.last is more than 50 characters', () => {
             user.name.last = genString(51);
 
-            const { error } = baseValidator().validate(user);
+            const { error } = exec();
 
             expect(error).toBeTruthy();
         });
@@ -92,7 +107,7 @@ describe('user model validation', () => {
         it('should return an error if login is less than 3 characters', () => {
             user.login = genString(2);
 
-            const { error } = baseValidator().validate(user);
+            const { error } = exec();
 
             expect(error).toBeTruthy();
         });
@@ -100,7 +115,7 @@ describe('user model validation', () => {
         it('should return an error if login is more than 50 characters', () => {
             user.login = genString(51);
 
-            const { error } = baseValidator().validate(user);
+            const { error } = exec();
 
             expect(error).toBeTruthy();
         });
@@ -108,7 +123,7 @@ describe('user model validation', () => {
         it('should return an error if phone is more than 50 characters', () => {
             user.phone = genString(51);
 
-            const { error } = baseValidator().validate(user);
+            const { error } = exec();
 
             expect(error).toBeTruthy();
         });
@@ -116,7 +131,7 @@ describe('user model validation', () => {
         it('should return an error if cardId is more than 50 characters', () => {
             user.cardId = genString(51);
 
-            const { error } = baseValidator().validate(user);
+            const { error } = exec();
 
             expect(error).toBeTruthy();
         });
@@ -124,7 +139,7 @@ describe('user model validation', () => {
         it('should return an error if there is an unexpected field in the user object', () => {
             user.mockUnexpectedField = 'test';
 
-            const { error } = baseValidator().validate(user);
+            const { error } = exec();
 
             expect(error).toBeTruthy();
         });
@@ -228,8 +243,8 @@ describe('user model validation', () => {
         });
 
         it('should return an error if login is not a string', () => {
-            mockNonStringValues().forEach(data => {
-                login = data;
+            mockNonStringValues().forEach(value => {
+                login = value;
 
                 const { error } = exec();
 
@@ -262,8 +277,8 @@ describe('user model validation', () => {
         });
 
         it('should return an error if password is not a string', () => {
-            mockNonStringValues().forEach(data => {
-                password = data;
+            mockNonStringValues().forEach(value => {
+                password = value;
 
                 const { error } = exec();
 
