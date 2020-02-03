@@ -11,7 +11,7 @@ const {
  * Non-string values that can be recived
  * from client as parsed JSON
  */
-const mockInputValues = () => ([
+const mockNonStringValues = () => ([
     null,
     1,
     [],
@@ -228,7 +228,7 @@ describe('user model validation', () => {
         });
 
         it('should return an error if login is not a string', () => {
-            mockInputValues().forEach(data => {
+            mockNonStringValues().forEach(data => {
                 login = data;
 
                 const { error } = exec();
@@ -262,7 +262,7 @@ describe('user model validation', () => {
         });
 
         it('should return an error if password is not a string', () => {
-            mockInputValues().forEach(data => {
+            mockNonStringValues().forEach(data => {
                 password = data;
 
                 const { error } = exec();
