@@ -146,10 +146,15 @@ describe('user model validation', () => {
     });
 
     describe('createdUserValidator', () => {
+
+        const exec = () => {
+            return createdUserValidator(user);
+        };
+
         it('should return no error if it is valid input', () => {
             user.password = '12345';
 
-            const { error } = createdUserValidator(user);
+            const { error } = exec();
 
             expect(error).toBeFalsy();
         });
@@ -157,7 +162,7 @@ describe('user model validation', () => {
         it('should return an error if password is not exist', () => {
             user.password = undefined;
 
-            const { error } = createdUserValidator(user);
+            const { error } = exec();
 
             expect(error).toBeTruthy();
         });
@@ -165,7 +170,7 @@ describe('user model validation', () => {
         it('should return an error if password is less than 3 characters', () => {
             user.password = '12';
 
-            const { error } = createdUserValidator(user);
+            const { error } = exec();
 
             expect(error).toBeTruthy();
         });
@@ -173,17 +178,22 @@ describe('user model validation', () => {
         it('should return an error if password is more than 50 characters', () => {
             user.password = genString(51);
 
-            const { error } = createdUserValidator(user);
+            const { error } = exec();
 
             expect(error).toBeTruthy();
         });
     });
 
     describe('editedUserValidator', () => {
+
+        const exec = () => {
+            return editedUserValidator(user);
+        }
+
         it('should return no error if it is valid input', () => {
             user.password = '12345';
 
-            const { error } = editedUserValidator(user);
+            const { error } = exec();
 
             expect(error).toBeFalsy();
         });
@@ -191,7 +201,7 @@ describe('user model validation', () => {
         it('should return no error if input is valid but password is not defined', () => {
             user.password = undefined;
 
-            const { error } = editedUserValidator(user);
+            const { error } = exec();
 
             expect(error).toBeFalsy();
         });
@@ -199,7 +209,7 @@ describe('user model validation', () => {
         it('should return an error if password is less than 3 characters', () => {
             user.password = 'a';
 
-            const { error } = editedUserValidator(user);
+            const { error } = exec();
 
             expect(error).toBeTruthy();
         });
@@ -207,7 +217,7 @@ describe('user model validation', () => {
         it('should return an error if password is more than 50 characters', () => {
             user.password = genString(51);
 
-            const { error } = editedUserValidator(user);
+            const { error } = exec();
 
             expect(error).toBeTruthy();
         });
