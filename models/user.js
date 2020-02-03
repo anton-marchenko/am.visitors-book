@@ -8,6 +8,7 @@ const {
     signInUserValidator
 } = require('./user.utils')
 
+// TODO move to user.utils
 const generateHashedPassword = async (plainPassword) => {
     const salt = await bcrypt.genSalt(10);
     return bcrypt.hash(plainPassword, salt);
