@@ -1,5 +1,13 @@
 const Joi = require('@hapi/joi');
 
+const loginSchema = {
+    login: Joi.string().min(3).max(50).required()
+};
+
+const passwordSchema = {
+    password: Joi.string().min(3).max(50).required()
+};
+
 const baseValidator = () => {
     return Joi.object({
         name: {
@@ -8,15 +16,12 @@ const baseValidator = () => {
             last: Joi.string().min(2).max(50).required()
         },
         phone: Joi.string().max(50),
-        cardId: Joi.string().max(50),
-        login: Joi.string().min(3).max(50).required()
-    });
+        cardId: Joi.string().max(50)
+    }).append(loginSchema);
 };
 
 const withPasswordValidation = (validator) => {
-    return validator().append({
-        password: Joi.string().min(3).max(50).required()
-    });
+    return validator().append(passwordSchema);
 };
 
 const withEditedUserPasswordValidation = (validator) => {
@@ -36,7 +41,7 @@ const editedUserValidator = (user) => {
     return withEditedUserPasswordValidation(baseValidator).validate(user)
 };
 
-function createdUserValidator(user) {
+const createdUserValidator = (user) => {
     return withPasswordValidation(baseValidator).validate(user)
 }
 
