@@ -7,6 +7,10 @@ const {
     signInUserValidator
 } = require('../../../models/user.utils');
 
+/**
+ * Non-string values that can be recived
+ * from client as parsed JSON
+ */
 const mockInputValues = () => ([
     null,
     1,
