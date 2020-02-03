@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const Joi = require('@hapi/joi');
 
 const loginSchema = {
@@ -52,7 +53,13 @@ const signInUserValidator = (data) => {
     }).validate(data)
 }
 
+const validatePassword = async (incomingPassword, hashedPassword) => {
+    return bcrypt.compare(incomingPassword, hashedPassword);
+}
+
 exports.baseValidator = baseValidator;
 exports.createdUserValidator = createdUserValidator;
 exports.editedUserValidator = editedUserValidator;
 exports.signInUserValidator = signInUserValidator;
+exports.validatePassword = validatePassword;
+

@@ -1,10 +1,10 @@
-const {
-    createdUserValidator,
-    editedUserValidator
-} = require('../../../models/user');
+const bcrypt = require('bcrypt');
 const {
     baseValidator,
-    signInUserValidator
+    signInUserValidator,
+    createdUserValidator,
+    editedUserValidator,
+    validatePassword
 } = require('../../../models/user.utils');
 
 /**
@@ -379,6 +379,33 @@ describe('user model validation', () => {
             const { error } = exec();
 
             expect(error).toBeTruthy();
+        });
+    });
+
+    describe('validatePassword', () => {
+        let password;
+
+        const exec = async () => {
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash('12345', salt);
+
+            return await validatePassword(password, hashedPassword);
+        }
+
+        it('should return true if password is valid', async () => {
+            password = '12345';
+
+            const res = await exec();
+
+            expect(res).toBeTruthy();
+        });
+
+        it('should return false if password is not valid', async () => {
+            password = '11111';
+
+            const res = await exec();
+
+            expect(res).toBeFalsy();
         });
     });
 });
