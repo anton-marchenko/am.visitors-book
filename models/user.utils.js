@@ -45,6 +45,14 @@ const createdUserValidator = (user) => {
     return withPasswordValidation(baseValidator).validate(user)
 }
 
+const signInUserValidator = (data) => {
+    return Joi.object({
+        ...loginSchema,
+        ...passwordSchema
+    }).validate(data)
+}
+
 exports.baseValidator = baseValidator;
 exports.createdUserValidator = createdUserValidator;
 exports.editedUserValidator = editedUserValidator;
+exports.signInUserValidator = signInUserValidator;

@@ -2,7 +2,10 @@ const {
     createdUserValidator,
     editedUserValidator
 } = require('../../../models/user');
-const { baseValidator } = require('../../../models/user.utils');
+const {
+    baseValidator,
+    signInUserValidator
+} = require('../../../models/user.utils');
 
 describe('user model validation', () => {
     const genString = (length) => new Array(length + 1).join('a');
@@ -185,14 +188,98 @@ describe('user model validation', () => {
     });
 
     describe('signInUserValidator', () => {
-        it.todo('should return no error if it is valid input');
-        it.todo('should return an error if login is not exist');
-        it.todo('should return an error if login is not a string');
-        it.todo('should return an error if login is less than 3 characters');
-        it.todo('should return an error if login is more than 50 characters');
-        it.todo('should return an error if password is not exist');
-        it.todo('should return an error if password is not a string');
-        it.todo('should return an error if password is less than 3 characters');
-        it.todo('should return an error if password is more than 50 characters');
+        let login, password;
+        const mockInputValues = [
+            null,
+            1,
+            [],
+            {}
+        ];
+
+        beforeEach(() => {
+            login = 'test';
+            password = '12345';
+        });
+
+        const exec = () => {
+            return signInUserValidator({
+                login,
+                password
+            });
+        }
+
+        it('should return no error if it is valid input', () => {
+            const { error } = exec();
+
+            expect(error).toBeFalsy();
+        });
+
+        it('should return an error if login is not exist', () => {
+            login = undefined;
+
+            const { error } = exec();
+
+            expect(error).toBeTruthy();
+        });
+
+        it('should return an error if login is not a string', () => {
+            mockInputValues.forEach(data => {
+                login = data;
+
+                const { error } = exec();
+
+                expect(error).toBeTruthy();
+            });
+        });
+
+        it('should return an error if login is less than 3 characters', () => {
+            login = 'a';
+
+            const { error } = exec();
+
+            expect(error).toBeTruthy();
+        });
+
+        it('should return an error if login is more than 50 characters', () => {
+            login = genString(51);
+
+            const { error } = exec();
+
+            expect(error).toBeTruthy();
+        });
+
+        it('should return an error if password is not exist', () => {
+            password = undefined;
+
+            const { error } = exec();
+
+            expect(error).toBeTruthy();
+        });
+
+        it('should return an error if password is not a string', () => {
+            mockInputValues.forEach(data => {
+                password = data;
+
+                const { error } = exec();
+
+                expect(error).toBeTruthy();
+            });
+        });
+
+        it('should return an error if password is less than 3 characters', () => {
+            password = 'a';
+
+            const { error } = exec();
+
+            expect(error).toBeTruthy();
+        });
+
+        it('should return an error if password is more than 50 characters', () => {
+            password = genString(51);
+
+            const { error } = exec();
+
+            expect(error).toBeTruthy();
+        });
     });
 });
