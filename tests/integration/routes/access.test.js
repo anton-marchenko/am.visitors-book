@@ -70,7 +70,7 @@ describe('/api/access/tokens/validate', () => {
 
 describe('/api/access/third-party-app/tokens', () => {
     describe('GET /', () => {
-        it.todo('should return all access records');
+        it.todo('should return all access entries');
         it.todo('should return 400 if clients token is not valid');
         it.todo('should return 401 if a client is not logged in');
         it.todo('should return 403 if permission denied');
@@ -161,8 +161,8 @@ describe('/api/access/third-party-app/tokens', () => {
     });
 
     describe('DELETE /:accessId', () => {
-        it.todo('should delete the access record if input is valid');
-        it.todo('should return the removed access record');
+        it.todo('should delete the access entry if input is valid');
+        it.todo('should return the removed access entry');
 
         it.todo('should return 400 if clients token is not valid');
         it.todo('should return 401 if a client is not logged in');
