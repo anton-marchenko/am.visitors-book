@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const request = require('supertest');
 const config = require('config');
 const jwt = require('jsonwebtoken');
@@ -161,14 +162,91 @@ describe('/api/access/third-party-app/tokens', () => {
     });
 
     describe('DELETE /:accessId', () => {
-        it.todo('should delete the access entry if input is valid');
-        it.todo('should return the removed access entry');
+        let token, userId, accessId, appName;
 
-        it.todo('should return 400 if clients token is not valid');
-        it.todo('should return 401 if a client is not logged in');
-        it.todo('should return 403 if permission denied');
+        beforeEach(async () => {
+            server = require('../../../index');
 
-        it.todo('should return 404 if accessId is not valid');
-        it.todo('should return 404 if accessId is not found');
+            userId = mongoose.Types.ObjectId().toHexString();
+            appName = 'test';
+            token = new User({
+                _id: userId,
+                roles: ['admin']
+            }).generateAuthToken();
+
+            const access = await ThirdPartyAccess.createNewAccess({
+                createdBy: userId,
+                appName,
+            });
+            accessId = access._id;
+        });
+
+        afterEach(async () => {
+            await server.close();
+            await ThirdPartyAccess.deleteMany({});
+        });
+
+        const exec = async () => {
+            return await request(server)
+                .delete('/api/access/third-party-app/tokens/' + accessId)
+                .set('x-auth-token', token)
+                .send();
+        }
+
+        it('should return the removed access entry', async () => {
+            const res = await exec();
+
+            expect(Object.keys(res.body)).toEqual(
+                expect.arrayContaining(['_id', 'createdBy', 'appName'])
+            );
+        });
+
+        it('should delete the access entry if input is valid', async () => {
+            await exec();
+
+            const storedAccessEntry = await ThirdPartyAccess.findById(accessId);
+
+            expect(storedAccessEntry).toBeNull();
+        });
+
+        it('should return 400 if clients token is not valid', async () => {
+            token = 1;
+
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+        });
+
+        it('should return 401 if a client is not logged in', async () => {
+            token = '';
+
+            const res = await exec();
+
+            expect(res.status).toBe(401);
+        });
+
+        it('should return 403 if permission denied', async () => {
+            token = new User({ roles: [] }).generateAuthToken();
+
+            const res = await exec();
+
+            expect(res.status).toBe(403);
+        });
+
+        it('should return 404 if accessId is not valid', async () => {
+            accessId = 1;
+
+            const res = await exec();
+
+            expect(res.status).toBe(404);
+        });
+
+        it('should return 404 if accessId is not found', async () => {
+            accessId = mongoose.Types.ObjectId();
+
+            const res = await exec();
+
+            expect(res.status).toBe(404);
+        });
     });
 });
