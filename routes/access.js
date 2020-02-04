@@ -6,13 +6,13 @@ const { ThirdPartyAccess } = require('../models/third-party-access');
 const NOT_FOUND_MSG = 'An access entry with the given ID was not found';
 const tokenDeleteMiddleware = [auth, allowedFor('admin'), validateObjectId];
 
-router.get('/', [auth, allowedFor('admin')], async (req, res) => {
+router.get('/', [auth, allowedFor(['admin'])], async (req, res) => {
     const accessEntries = await ThirdPartyAccess.find().sort({ _id: -1 })
 
     return res.send(accessEntries);
 });
 
-router.post('/', [auth, allowedFor('admin')], async (req, res) => {
+router.post('/', [auth, allowedFor(['admin'])], async (req, res) => {
     const { _id, appName, createdBy } = await ThirdPartyAccess.createNewAccess({
         createdBy: req.user._id,
         appName: req.body.appName,
