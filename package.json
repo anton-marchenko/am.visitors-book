@@ -9,7 +9,7 @@
     "test:coverage": "jest --verbose --watchAll --detectOpenHandles --coverage"
   },
   "author": "Anton Marchenko",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@hapi/joi": "^17.1.0",
     "bcrypt": "^3.0.7",
