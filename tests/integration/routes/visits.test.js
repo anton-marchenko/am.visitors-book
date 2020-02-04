@@ -105,6 +105,9 @@ describe('/api/visits', () => {
     });
 
     describe('GET /', () => {
-        it.todo('should ... GET');
+        it.todo('should return all visits');
+        it.todo('should return 400 if the token is not valid');
+        it.todo('should return 401 if the client is not logged in');
+        it.todo('should return 403 if permission denied');
     });
 });
