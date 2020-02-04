@@ -3,7 +3,7 @@ const path = require('path');
 const winston = require('winston');
 require('express-async-errors');
 
-module.exports = (appProcess) => {
+module.exports = () => {
     const logPath = config.get('logPath');
 
     winston.handleExceptions(
@@ -15,11 +15,6 @@ module.exports = (appProcess) => {
             filename: path.join(logPath, 'error.log')
         })
     );
-
-    // TODO - it is not responsibility of logger. Needs to move to separate module
-    appProcess.on('unhandledRejection', (ex) => {
-        throw ex;
-    });
 
     winston.add(winston.transports.File, {
         filename: path.join(logPath, 'info.log')

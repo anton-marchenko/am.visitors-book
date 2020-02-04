@@ -1,11 +1,11 @@
 const EventEmitter = require('events');
-const logging = require('../../../startup/logging');
+const errorCatcher = require('../../../startup/error-catcher');
 
-describe('startup - logging()', () => {
+describe('startup - errorCatcher()', () => {
     it('should throw an error if there is an unhandled rejection inside the app', async () => {
         const mockProcess = new EventEmitter();
 
-        logging(mockProcess);
+        errorCatcher(mockProcess);
 
         expect(() => mockProcess.emit('unhandledRejection')).toThrow();
     });

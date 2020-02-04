@@ -6,7 +6,8 @@ const app = express();
 const startup = require('./startup');
 
 startup.config(config);
-startup.logging(process);
+startup.errorCatcher(process);
+startup.logging();
 startup.routes(app);
 startup.db();
 
