@@ -11,6 +11,12 @@ router.post('/tokens/validate', auth, async (req, res) => {
     return res.status(200).send('OK');
 });
 
+router.get(thirdPartyPath, [auth, allowedFor('admin')], async (req, res) => {
+    const accessEntries = await ThirdPartyAccess.find().sort({ _id: -1 })
+
+    return res.send(accessEntries);
+});
+
 router.post(thirdPartyPath, [auth, allowedFor('admin')], async (req, res) => {
     const { _id, appName, createdBy } = await ThirdPartyAccess.createNewAccess({
         createdBy: req.user._id,

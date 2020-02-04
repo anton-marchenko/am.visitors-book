@@ -71,10 +71,67 @@ describe('/api/access/tokens/validate', () => {
 
 describe('/api/access/third-party-app/tokens', () => {
     describe('GET /', () => {
-        it.todo('should return all access entries');
-        it.todo('should return 400 if clients token is not valid');
-        it.todo('should return 401 if a client is not logged in');
-        it.todo('should return 403 if permission denied');
+        let token;
+
+        beforeEach(async () => {
+            server = require('../../../index');
+
+            token = new User({ roles: ['admin'] }).generateAuthToken();
+        });
+
+        afterEach(async () => {
+            await server.close();
+            await ThirdPartyAccess.deleteMany({});
+        });
+
+        const exec = async () => {
+            return await request(server)
+                .get('/api/access/third-party-app/tokens')
+                .set('x-auth-token', token);
+        };
+
+        it('should return all access entries', async () => {
+            await ThirdPartyAccess.createNewAccess({
+                createdBy: mongoose.Types.ObjectId(),
+                appName: 'test1'
+            });
+
+            await ThirdPartyAccess.createNewAccess({
+                createdBy: mongoose.Types.ObjectId(),
+                appName: 'test2'
+            });
+
+            const res = await exec();
+
+            expect(res.status).toBe(200);
+            expect(res.body.length).toBe(2);
+            expect(res.body.some(item => item.appName === 'test1')).toBeTruthy();
+            expect(res.body.some(item => item.appName === 'test1')).toBeTruthy();
+        });
+
+        it('should return 400 if clients token is not valid', async () => {
+            token = 1;
+
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+        });
+
+        it('should return 401 if a client is not logged in', async () => {
+            token = '';
+
+            const res = await exec();
+
+            expect(res.status).toBe(401);
+        });
+
+        it('should return 403 if permission denied', async () => {
+            token = new User({ roles: [] }).generateAuthToken();
+
+            const res = await exec();
+
+            expect(res.status).toBe(403);
+        });
     });
 
     describe('POST /', () => {
