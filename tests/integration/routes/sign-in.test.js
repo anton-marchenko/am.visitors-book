@@ -44,10 +44,10 @@ describe('/api/sign-in', () => {
 
     it('should return valid JWT', async () => {
         const res = await exec();
-
-        const decoded = jwt.verify(res.text, config.get('jwtSecret'))
-
-        expect(decoded).toBeTruthy();
+        
+        expect(() => {
+            jwt.verify(res.text, config.get('jwtSecret'))
+        }).not.toThrow();
     });
 
     it('should return 200 if input is valid', async () => {
