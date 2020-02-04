@@ -103,4 +103,8 @@ describe('/api/visits', () => {
             expect(res.status).toBe(404);
         });
     });
+
+    describe('GET /', () => {
+        it.todo('should ... GET');
+    });
 });
