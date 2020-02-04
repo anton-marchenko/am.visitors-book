@@ -38,6 +38,8 @@ Nowadays, you can use tests for examine how the project actually works. Just run
 - [ ] Documentation
 - [ ] Docker
 - [ ] Roles: pupil, teacher
+- [ ] JWT revoking
+- [ ] Checking permissions in the server side instead of JWT only
 
 ## Project structure
 
