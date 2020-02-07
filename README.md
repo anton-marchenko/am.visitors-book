@@ -33,6 +33,7 @@ Nowadays, you can use tests for examine how the project actually works. Just run
 ## Todo list
 
 - [ ] Frontend application
+- [ ] User`s avatar
 - [ ] MQTT broker
 - [ ] Visits pagination
 - [ ] Documentation
